@@ -27,12 +27,15 @@ protected:
 	void OnMicrophoneStart();
 	void OnMicrophoneStop();
 
+	void CreateMyObject(TArray<FConversationMessageRuntimeEntity> entity_array);
+
 	// Watson
 	UPROPERTY() UWatson* MyWatson;
 
 	// Conversation
 	UPROPERTY() UConversation* MyConversation;
 	TSharedPtr<FConversationMessageResponse> LastResponse;
+	void ProcessCommand(TArray<FConversationMessageRuntimeIntent> intent_array, TArray<FConversationMessageRuntimeEntity> entity_array);
 	void OnConversationMessage(TSharedPtr<FConversationMessageResponse> Response);
 	void OnConversationFailure(FString Error);
 

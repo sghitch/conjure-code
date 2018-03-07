@@ -1,4 +1,5 @@
 #include "Assistant.h"
+#include <iostream>
 
 AAssistant::AAssistant()
 {
@@ -34,6 +35,8 @@ void AAssistant::Tick(float DeltaTime)
 void AAssistant::OnMicrophoneStart()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Microphone Starting..."));
+	std::cout << "Print test" << std::endl;
+
 	MyMicrophone->StartRecording();
 	UE_LOG(LogTemp, Warning, TEXT("1"));
 }
@@ -53,11 +56,43 @@ void AAssistant::OnMicrophoneStop()
 	Request->Send();
 }
 
+
+
+void AAssistant::CreateMyObject(TArray<FConversationMessageRuntimeEntity> entity_array) {
+	if (entity_array[0].confidence > 0.5 && (entity_array[0].value.Compare("Cube") == 0)) {
+		//DO THE THING HERE
+	}
+}
+
+
+
+//HACKY REWRITE ME
+void AAssistant::ProcessCommand(TArray<FConversationMessageRuntimeIntent> intent_array, TArray<FConversationMessageRuntimeEntity> entity_array) {
+/*	size_t entity_arr_len = sizeof(entity_array) / sizeof(entity_array[0]);
+	for (size_t i = 0; i < entity_arr_len; i++) {
+
+	}*/
+	
+
+	if (intent_array[0].confidence > 0.5 && (intent_array[0].intent.Compare("Create") == 0)) {
+		CreateMyObject(entity_array);
+	}
+}
+
 void AAssistant::OnConversationMessage(TSharedPtr<FConversationMessageResponse> Response)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Conversation Success: %s"), *Response->output.text.Last());
 	UE_LOG(LogTemp, Warning, TEXT("6"));
 	LastResponse = Response;
+
+	TArray<FConversationMessageRuntimeIntent> intent_array = Response->intents;
+	TArray<FConversationMessageRuntimeEntity> entity_array = Response->entities;
+	ProcessCommand(intent_array, entity_array);
+	std::cout << "PRINTING INT ARRAY" << std::endl;
+	/*for (size_t i = 0; i < intent_array.size(); i++) {
+		std::cout << intent_array.at(i) <<std:: endl;
+	}
+	std::cout << "FINISHED PRINTING INTENT ARRAY" << std::endl;*/
 
 	// Make Text To Speech Request
 	FTextToSpeechSynthesizeRequest SynthesisRequest;
