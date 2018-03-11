@@ -36,6 +36,9 @@ protected:
 	UPROPERTY() UConversation* MyConversation;
 	TSharedPtr<FConversationMessageResponse> LastResponse;
 	void ProcessCommand(TArray<FConversationMessageRuntimeIntent> intent_array, TArray<FConversationMessageRuntimeEntity> entity_array);
+
+	//void buildParams(TArray<FString> &intentArr, std::map<FString, FString> &entityMap, TSharedPtr<FConversationMessageResponse> Response);
+
 	void OnConversationMessage(TSharedPtr<FConversationMessageResponse> Response);
 	void OnConversationFailure(FString Error);
 
