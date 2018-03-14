@@ -1,10 +1,13 @@
 #pragma once
+
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Watson.h"
+#include <map>
 #include "Common/Speaker.h"
 #include "Common/Microphone.h"
 #include "Assistant.generated.h"
+
 
 //Enter Your Project Name Below
 UCLASS()
@@ -27,7 +30,8 @@ protected:
 	void OnMicrophoneStart();
 	void OnMicrophoneStop();
 
-	void CreateMyObject(TArray<FConversationMessageRuntimeEntity> entity_array);
+	// world modification methods
+	void createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 
 	// Watson
 	UPROPERTY() UWatson* MyWatson;
@@ -35,7 +39,6 @@ protected:
 	// Conversation
 	UPROPERTY() UConversation* MyConversation;
 	TSharedPtr<FConversationMessageResponse> LastResponse;
-	void ProcessCommand(TArray<FConversationMessageRuntimeIntent> intent_array, TArray<FConversationMessageRuntimeEntity> entity_array);
 
 	//void buildParams(TArray<FString> &intentArr, std::map<FString, FString> &entityMap, TSharedPtr<FConversationMessageResponse> Response);
 
@@ -51,4 +54,7 @@ protected:
 	UPROPERTY() USpeechToText* MySpeechToText;
 	void OnSpeechToTextRecognize(TSharedPtr<FSpeechToTextRecognizeResponse> Response);
 	void OnSpeechToTextFailure(FString Error);
+
+	//Mesh Component
+	UStaticMeshComponent* SphereVisual;
 };

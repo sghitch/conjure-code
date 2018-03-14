@@ -1,10 +1,17 @@
 #include "Assistant.h"
+#include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+#include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include <iostream>
 #include <map>
 #include <functional>
 
-std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>)>> functionMap;
 
+//std::map<FString, void(TArray<FString>, std::map<FString, FString>)> functionMap;
+std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>&)> > functionMap;
+
+//typedef void (*FnPtr) (TArray<FString>, std::map<FString, FString>);
+
+//std::map<FString, FnPtr> functionMap;
 
 AAssistant::AAssistant()
 {
@@ -18,7 +25,12 @@ AAssistant::AAssistant()
 	MyConversation = MyWatson->CreateConversation(FAuthentication("8241c345-75d7-4f90-b76f-09514a07b8d0", "gRnKcvq0jTo2"));
 	MyTextToSpeech = MyWatson->CreateTextToSpeech(FAuthentication("9481a3c9-f256-4f81-b8d6-8fa10b1d9bfe", "L3URP1vRu1BE"));
 	MySpeechToText = MyWatson->CreateSpeechToText(FAuthentication("9c33d075-f79a-43e3-bb61-36064e9b2c75", "Lm0SbXNcAjJV"));
+
 	//TODO: initialize function map here?
+	SphereVisual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisualRepresentation"));
+	SphereVisual->SetupAttachment(RootComponent);
+
+//	functionMap[FString(TEXT("createObject"))] = createObject;
 }
 
 void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
@@ -66,26 +78,15 @@ void AAssistant::OnMicrophoneStop()
 
 
 
-void AAssistant::CreateMyObject(TArray<FConversationMessageRuntimeEntity> entity_array) {
-	if (entity_array[0].confidence > 0.5 && (entity_array[0].value.Compare("Cube") == 0)) {
-		//DO THE THING HERE
+void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
+	
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereVisualAsset(TEXT("/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere"));
+	if (SphereVisualAsset.Succeeded())
+	{
+		SphereVisual->SetStaticMesh(SphereVisualAsset.Object);
 	}
 }
 
-
-
-//HACKY REWRITE ME
-void AAssistant::ProcessCommand(TArray<FConversationMessageRuntimeIntent> intent_array, TArray<FConversationMessageRuntimeEntity> entity_array) {
-	/*	size_t entity_arr_len = sizeof(entity_array) / sizeof(entity_array[0]);
-	for (size_t i = 0; i < entity_arr_len; i++) {
-
-	}*/
-
-
-	if (intent_array[0].confidence > 0.5 && (intent_array[0].intent.Compare("Create") == 0)) {
-		CreateMyObject(entity_array);
-	}
-}
 
 
 FString parseResponseMethod(FString message) {
@@ -112,15 +113,6 @@ void AAssistant::OnConversationMessage(TSharedPtr<FConversationMessageResponse> 
 	UE_LOG(LogTemp, Warning, TEXT("6"));
 	LastResponse = Response;
 
-	/*TArray<FConversationMessageRuntimeIntent> intent_array = Response->intents;
-	TArray<FConversationMessageRuntimeEntity> entity_array = Response->entities;
-	ProcessCommand(intent_array, entity_array);
-	std::cout << "PRINTING INT ARRAY" << std::endl;
-	for (size_t i = 0; i < intent_array.size(); i++) {
-	std::cout << intent_array.at(i) <<std:: endl;
-	}
-	std::cout << "FINISHED PRINTING INTENT ARRAY" << std::endl;*/
-
 	// Make Text To Speech Request
 	FTextToSpeechSynthesizeRequest SynthesisRequest;
 	SynthesisRequest.text = Response->output.text.Last();
@@ -129,11 +121,16 @@ void AAssistant::OnConversationMessage(TSharedPtr<FConversationMessageResponse> 
 	std::map<FString, FString> entityMap;
 	buildParams(intentArr, entityMap, Response);
 
+	createObject(intentArr, entityMap);
+
 	if (functionMap.find(method) != functionMap.end()) {
 		functionMap[method](intentArr, entityMap);
+		//functionMap[method](intentArr, entityMap);
+		//FnPtr f = functionMap[method];
+		//(*f)(intentArr, entityMap);
 	}
 	else {
-		//Method does not exist, backup plan here?
+		UE_LOG(LogTemp, Warning, TEXT("Function: %s does not exist"), *method);
 	}
 
 
