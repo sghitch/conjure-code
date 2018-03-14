@@ -1,13 +1,16 @@
 #include "Assistant.h"
 #include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
+#include "Asset.h"
 #include <iostream>
 #include <map>
 #include <functional>
 
+using namespace std::placeholders;
 
 //std::map<FString, void(TArray<FString>, std::map<FString, FString>)> functionMap;
-std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>&)> > functionMap;
+std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>)>> functionMap;
 
 //typedef void (*FnPtr) (TArray<FString>, std::map<FString, FString>);
 
@@ -27,10 +30,11 @@ AAssistant::AAssistant()
 	MySpeechToText = MyWatson->CreateSpeechToText(FAuthentication("9c33d075-f79a-43e3-bb61-36064e9b2c75", "Lm0SbXNcAjJV"));
 
 	//TODO: initialize function map here?
-	SphereVisual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisualRepresentation"));
-	SphereVisual->SetupAttachment(RootComponent);
+	initialize();
+}
 
-//	functionMap[FString(TEXT("createObject"))] = createObject;
+void AAssistant::initialize() {
+	functionMap[FString(TEXT("createObject"))] = std::bind(&AAssistant::createObject, this, _1, _2);
 }
 
 void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
@@ -80,12 +84,18 @@ void AAssistant::OnMicrophoneStop()
 
 void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
 	
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereVisualAsset(TEXT("/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere"));
-	if (SphereVisualAsset.Succeeded())
-	{
-		SphereVisual->SetStaticMesh(SphereVisualAsset.Object);
+	if (entity_map.find(FString(TEXT("Object"))) == entity_map.end()) {
+		//This means that no object was specified
 	}
+	FString object = entity_map.at(FString(TEXT("Object")));
+
+	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
+	float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
+	float z = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
+	FVector loc = FVector(x, y, z);
+	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), loc, FRotator::ZeroRotator);
 }
+
 
 
 
@@ -116,12 +126,12 @@ void AAssistant::OnConversationMessage(TSharedPtr<FConversationMessageResponse> 
 	// Make Text To Speech Request
 	FTextToSpeechSynthesizeRequest SynthesisRequest;
 	SynthesisRequest.text = Response->output.text.Last();
-	FString method = parseResponseMethod(Response->output.text[0]);
+	FString method = parseResponseMethod(Response->output.text.Last());
 	TArray<FString> intentArr;
 	std::map<FString, FString> entityMap;
 	buildParams(intentArr, entityMap, Response);
 
-	createObject(intentArr, entityMap);
+	//createObject(intentArr, entityMap);
 
 	if (functionMap.find(method) != functionMap.end()) {
 		functionMap[method](intentArr, entityMap);

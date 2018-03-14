@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+#include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Asset.generated.h"

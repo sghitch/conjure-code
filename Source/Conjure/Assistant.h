@@ -19,6 +19,7 @@ public:
 	AAssistant();
 	void BeginPlay() override;
 	void Tick(float DeltaTime) override;
+	void initialize();
 	void SetupPlayerInputComponent(class UInputComponent* InputComponent);
 
 protected:
