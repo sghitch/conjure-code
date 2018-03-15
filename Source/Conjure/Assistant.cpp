@@ -97,6 +97,31 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->GetActorForwardVector() * 1000;
 	FVector actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() + actorForwardVectorMulDistance;
 	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), actorLocation, FRotator::ZeroRotator);
+
+	UWorld* World = GetWorld();
+	//const FTransform SpawnLocAndRotation = FTransform(actorLocation);
+	//auto spawnedActor1 = World->SpawnActorDeferred<AAsset>(AAsset::StaticClass(), SpawnLocAndRotation);
+	//spawnedActor1->setup(object);
+	//spawnedActor1->FinishSpawning(SpawnLocAndRotation);
+	FString path = "StaticMesh'";
+	path += FString(TEXT("/Game/StarterContent/Shapes/Shape_"));
+	
+	path += object;
+	path += FString(TEXT(".Shape_"));
+	path += object;
+	path += "'";
+	FName pathName = FName(*path);
+	auto obj = LoadObjFromPath<UStaticMesh>(pathName);
+	TArray<UStaticMeshComponent*> Components;
+	spawnedActor->GetComponents<UStaticMeshComponent>(Components);
+	for (int32 i = 0; i<Components.Num(); i++)
+	{
+		UStaticMeshComponent* StaticMeshComponent = Components[i];
+		StaticMeshComponent->SetStaticMesh(obj);
+		//UStaticMesh* StaticMesh = StaticMeshComponent->GetStaticMesh();
+		//StaticMesh.SetStaticMesh(obj);
+	}
+	//auto spawnedActor = GetWorld()->SpawnActor<obj>(obj, actorLocation, FRotator::ZeroRotator);
 }
 
 
