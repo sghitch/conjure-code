@@ -104,6 +104,16 @@ FString parseResponseMethod(FString message) {
 	return message.Left(chopIndex);
 }
 
+FString parseResponseMessage(FString message) {
+	int chopIndex = message.Find(":");
+	if (chopIndex == -1) { //This response didn't have a method attached to it.
+		return message;
+	}
+	chopIndex++;
+	FString speechMessage = message.RightChop(chopIndex);
+	return speechMessage;
+}
+
 void buildParams(TArray<FString> &intentArr, std::map<FString, FString> &entityMap, TSharedPtr<FConversationMessageResponse> Response) {
 	TArray<FConversationMessageRuntimeIntent> intents = Response->intents;
 
@@ -125,8 +135,9 @@ void AAssistant::OnConversationMessage(TSharedPtr<FConversationMessageResponse> 
 
 	// Make Text To Speech Request
 	FTextToSpeechSynthesizeRequest SynthesisRequest;
-	SynthesisRequest.text = Response->output.text.Last();
+	//SynthesisRequest.text = Response->output.text.Last();
 	FString method = parseResponseMethod(Response->output.text.Last());
+	SynthesisRequest.text = parseResponseMessage(Response->output.text.Last());
 	TArray<FString> intentArr;
 	std::map<FString, FString> entityMap;
 	buildParams(intentArr, entityMap, Response);
