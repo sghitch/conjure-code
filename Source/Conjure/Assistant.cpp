@@ -92,8 +92,11 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
 	float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
 	float z = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
-	FVector loc = FVector(x, y, z);
-	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), loc, FRotator::ZeroRotator);
+	//FVector loc = FVector(x, y, z);
+	FVector playerPos = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
+	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->GetActorForwardVector() * 1000;
+	FVector actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() + actorForwardVectorMulDistance;
+	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), actorLocation, FRotator::ZeroRotator);
 }
 
 
