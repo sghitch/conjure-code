@@ -126,7 +126,6 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 
 
 
-
 FString parseResponseMethod(FString message) {
 	int chopIndex = message.Find(":");
 	return message.Left(chopIndex);
@@ -203,6 +202,9 @@ void AAssistant::OnSpeechToTextRecognize(TSharedPtr<FSpeechToTextRecognizeRespon
 
 	// Make Conversation Request
 	FConversationMessageRequest ConversationRequest;
+	if (!Response->results.IsValidIndex(0)) {
+		return;
+	}
 	ConversationRequest.input.text = Response->results[0].alternatives[0].transcript;
 	UE_LOG(LogTemp, Warning, TEXT("11"));
 	if (LastResponse.Get() != nullptr)

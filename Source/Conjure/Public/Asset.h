@@ -16,10 +16,14 @@ class CONJURE_API AAsset : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AAsset();
-
+	//void setup(FString object);
+	UStaticMeshComponent* SphereVisual;
+	//AAsset(FString object);
 protected:
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	FString object;
 
 public:	
 	// Called every frame
