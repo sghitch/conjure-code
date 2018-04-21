@@ -50,11 +50,26 @@ void AAssistant::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+/*
+* Provides audio feedback to user. Used by OnMicrophoneStart to signal assistant is listening
+* and by OnMicrophoneStop to signal assistant is processing.
+*/
+void AAssistant::LatencyAudioResponse(FString message)
+{
+	FTextToSpeechSynthesizeRequest SynthesisRequest;
+	SynthesisRequest.text = message;
+	FTextToSpeechSynthesizePendingRequest* T2sRequest = MyTextToSpeech->Synthesize(SynthesisRequest, "en-US_AllisonVoice");
+	T2sRequest->OnSuccess.BindUObject(this, &AAssistant::OnTextToSpeechSynthesize);
+	T2sRequest->OnFailure.BindUObject(this, &AAssistant::OnTextToSpeechFailure);
+	T2sRequest->Send();
+}
+
 void AAssistant::OnMicrophoneStart()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Microphone Starting..."));
 	std::cout << "Print test" << std::endl;
-
+	//TODO: this would be a good place to play sound and signal that the assistant is listening
+	LatencyAudioResponse("Listening");
 	MyMicrophone->StartRecording();
 	UE_LOG(LogTemp, Warning, TEXT("1"));
 }
@@ -64,6 +79,7 @@ void AAssistant::OnMicrophoneStop()
 	UE_LOG(LogTemp, Warning, TEXT("Microphone Stopping..."));
 	UE_LOG(LogTemp, Warning, TEXT("2"));
 	MyMicrophone->StopRecording();
+	LatencyAudioResponse("Alright");
 	UE_LOG(LogTemp, Warning, TEXT("3"));
 	// Make Speech To Text Request
 	FSpeechToTextRecognizePendingRequest* Request = MySpeechToText->Recognize(MyMicrophone->GetRecording());

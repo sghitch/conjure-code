@@ -28,6 +28,7 @@ protected:
 
 	// Microphone
 	UPROPERTY() UMicrophone* MyMicrophone;
+	void LatencyAudioResponse(FString message);
 	void OnMicrophoneStart();
 	void OnMicrophoneStop();
 
