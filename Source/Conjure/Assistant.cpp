@@ -9,12 +9,8 @@
 
 using namespace std::placeholders;
 
-//std::map<FString, void(TArray<FString>, std::map<FString, FString>)> functionMap;
 std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>)>> functionMap;
 
-//typedef void (*FnPtr) (TArray<FString>, std::map<FString, FString>);
-
-//std::map<FString, FnPtr> functionMap;
 
 AAssistant::AAssistant()
 {
@@ -92,17 +88,12 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
 	float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
 	float z = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
-	//FVector loc = FVector(x, y, z);
 	FVector playerPos = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
 	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->GetActorForwardVector() * 1000;
 	FVector actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() + actorForwardVectorMulDistance;
 	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), actorLocation, FRotator::ZeroRotator);
 
 	UWorld* World = GetWorld();
-	//const FTransform SpawnLocAndRotation = FTransform(actorLocation);
-	//auto spawnedActor1 = World->SpawnActorDeferred<AAsset>(AAsset::StaticClass(), SpawnLocAndRotation);
-	//spawnedActor1->setup(object);
-	//spawnedActor1->FinishSpawning(SpawnLocAndRotation);
 	FString path = "StaticMesh'";
 	path += FString(TEXT("/Game/StarterContent/Shapes/Shape_"));
 	
@@ -118,10 +109,7 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 	{
 		UStaticMeshComponent* StaticMeshComponent = Components[i];
 		StaticMeshComponent->SetStaticMesh(obj);
-		//UStaticMesh* StaticMesh = StaticMeshComponent->GetStaticMesh();
-		//StaticMesh.SetStaticMesh(obj);
 	}
-	//auto spawnedActor = GetWorld()->SpawnActor<obj>(obj, actorLocation, FRotator::ZeroRotator);
 }
 
 
@@ -162,20 +150,14 @@ void AAssistant::OnConversationMessage(TSharedPtr<FConversationMessageResponse> 
 
 	// Make Text To Speech Request
 	FTextToSpeechSynthesizeRequest SynthesisRequest;
-	//SynthesisRequest.text = Response->output.text.Last();
 	FString method = parseResponseMethod(Response->output.text.Last());
 	SynthesisRequest.text = parseResponseMessage(Response->output.text.Last());
 	TArray<FString> intentArr;
 	std::map<FString, FString> entityMap;
 	buildParams(intentArr, entityMap, Response);
 
-	//createObject(intentArr, entityMap);
-
 	if (functionMap.find(method) != functionMap.end()) {
 		functionMap[method](intentArr, entityMap);
-		//functionMap[method](intentArr, entityMap);
-		//FnPtr f = functionMap[method];
-		//(*f)(intentArr, entityMap);
 	}
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("Function: %s does not exist"), *method);
