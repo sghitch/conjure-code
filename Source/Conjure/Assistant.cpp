@@ -7,13 +7,18 @@
 #include <map>
 #include <functional>
 
+
 using namespace std::placeholders;
 
 std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>)>> functionMap;
 
 
+
+
+
 AAssistant::AAssistant()
 {
+
 	PrimaryActorTick.bCanEverTick = true;
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
@@ -69,7 +74,7 @@ void AAssistant::OnMicrophoneStart()
 	UE_LOG(LogTemp, Warning, TEXT("Microphone Starting..."));
 	std::cout << "Print test" << std::endl;
 	//TODO: this would be a good place to play sound and signal that the assistant is listening
-	LatencyAudioResponse("Listening");
+	LatencyAudioResponse("Listening"); //Occurs at the wrong time
 	MyMicrophone->StartRecording();
 	UE_LOG(LogTemp, Warning, TEXT("1"));
 }
@@ -79,7 +84,7 @@ void AAssistant::OnMicrophoneStop()
 	UE_LOG(LogTemp, Warning, TEXT("Microphone Stopping..."));
 	UE_LOG(LogTemp, Warning, TEXT("2"));
 	MyMicrophone->StopRecording();
-	LatencyAudioResponse("Alright");
+	//LatencyAudioResponse("Alright"); //Occurs at the wrong time
 	UE_LOG(LogTemp, Warning, TEXT("3"));
 	// Make Speech To Text Request
 	FSpeechToTextRecognizePendingRequest* Request = MySpeechToText->Recognize(MyMicrophone->GetRecording());

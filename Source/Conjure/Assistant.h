@@ -9,6 +9,8 @@
 #include "Assistant.generated.h"
 
 
+
+
 //Enter Your Project Name Below
 UCLASS()
 class CONJURE_API AAssistant : public APawn
@@ -21,6 +23,8 @@ public:
 	void Tick(float DeltaTime) override;
 	void initialize();
 	void SetupPlayerInputComponent(class UInputComponent* InputComponent);
+
+
 
 protected:
 	// Speaker
