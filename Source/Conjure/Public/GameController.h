@@ -14,6 +14,7 @@ class CONJURE_API UGameController : public UActorComponent
 
 public:	
 	// Sets default values for this component's properties
+
 	UGameController();
 
 protected:
@@ -23,7 +24,4 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
-	
 };
