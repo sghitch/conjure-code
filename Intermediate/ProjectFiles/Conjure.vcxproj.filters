@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\Conjure.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{508117FE-ACC3-42C7-95BA-223F057B9A4D}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Conjure.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\ConjureEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{27021C07-0553-4107-B899-D750ABE02CBF}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultScalability.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Plugins">
+      <UniqueIdentifier>{229A0E2D-FF57-4CC2-9549-3AA1DE260E38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin">
+      <UniqueIdentifier>{B3C68BF9-A3C7-4F18-94D7-BB54602EDCCE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin\Source">
+      <UniqueIdentifier>{304D98CC-FD16-4FE6-81F8-1C58E10C4281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk">
+      <UniqueIdentifier>{2E689999-7378-485D-8985-50681E5DB16D}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\WatsonSdk.Build.cs">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk</Filter>
+    </None>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private">
+      <UniqueIdentifier>{EB3FCB11-9A95-4471-998F-A822A93F9086}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Watson.cpp">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\WatsonSdk.cpp">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\WatsonService.cpp">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private</Filter>
+    </ClCompile>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Common">
+      <UniqueIdentifier>{CFC9DC53-EF40-4B05-8E30-498F45453A29}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Common\Microphone.cpp">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Common\Speaker.cpp">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Common</Filter>
+    </ClCompile>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Services">
+      <UniqueIdentifier>{B14EB433-5EF1-4072-BF13-66ACB8A84F97}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Services\Conversation.cpp">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Services\SpeechToText.cpp">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Services\TextToSpeech.cpp">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Private\Services</Filter>
+    </ClCompile>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public">
+      <UniqueIdentifier>{807F58AC-E0DB-498A-A803-0DFDBB8E1BE8}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Watson.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\WatsonSdk.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\WatsonService.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public</Filter>
+    </ClInclude>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Common">
+      <UniqueIdentifier>{A8DF0732-540C-41A8-BE71-84859476D435}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Common\Authentication.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Common\Microphone.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Common\Speaker.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Common</Filter>
+    </ClInclude>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services">
+      <UniqueIdentifier>{B273E071-D00F-4B13-A5BF-BA996BD5ED98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation">
+      <UniqueIdentifier>{294ED6DB-677B-4C0C-A35B-1B9F2E0C3E69}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation\Conversation.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation\ConversationCounterexampleModel.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation\ConversationDialogNodeModel.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation\ConversationEntityModel.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation\ConversationExampleModel.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation\ConversationIntentModel.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation\ConversationMessageModel.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation\ConversationModel.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation\ConversationSynonymModel.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation\ConversationValueModel.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation\ConversationWorkspaceModel.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\Conversation</Filter>
+    </ClInclude>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\SpeechToText">
+      <UniqueIdentifier>{3E82467E-273F-4A8C-9F99-521332A68CDE}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\SpeechToText\RecognizeDataModel.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\SpeechToText</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\SpeechToText\SpeechToText.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\SpeechToText</Filter>
+    </ClInclude>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\TextToSpeech">
+      <UniqueIdentifier>{CC9D1013-C078-449F-8692-98B0328C0598}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\TextToSpeech\SynthesizeDataModel.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\TextToSpeech</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\TextToSpeech\TextToSpeech.h">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Source\WatsonSdk\Public\Services\TextToSpeech</Filter>
+    </ClInclude>
+    <None Include="..\..\Plugins\watson-unreal-sdk-plugin\WatsonSdk.uplugin">
+      <Filter>Plugins\watson-unreal-sdk-plugin</Filter>
+    </None>
+    <Filter Include="Plugins\watson-unreal-sdk-plugin\Resources">
+      <UniqueIdentifier>{77853305-C7D3-45B3-B0FD-61C3DB19248B}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Plugins\watson-unreal-sdk-plugin\Resources\Icon128.png">
+      <Filter>Plugins\watson-unreal-sdk-plugin\Resources</Filter>
+    </None>
+    <Filter Include="Source\Conjure">
+      <UniqueIdentifier>{73729882-DD14-4847-BC3C-22401E62D07D}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Conjure\Assistant.cpp">
+      <Filter>Source\Conjure</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Conjure\Assistant.h">
+      <Filter>Source\Conjure</Filter>
+    </ClInclude>
+    <None Include="..\..\Source\Conjure\Conjure.Build.cs">
+      <Filter>Source\Conjure</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\Conjure\Conjure.cpp">
+      <Filter>Source\Conjure</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Conjure\Conjure.h">
+      <Filter>Source\Conjure</Filter>
+    </ClInclude>
+    <Filter Include="Source\Conjure\Private">
+      <UniqueIdentifier>{84610F6B-8AAF-444F-8EB6-20ACE4AF1094}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Conjure\Private\Asset.cpp">
+      <Filter>Source\Conjure\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\Conjure\Public">
+      <UniqueIdentifier>{2644C606-2091-4EB5-956E-D49F9E5B17AB}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\Conjure\Public\Asset.h">
+      <Filter>Source\Conjure\Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\Conjure\Private\GameController.cpp">
+      <Filter>Source\Conjure\Private</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\Conjure\Public\GameController.h">
+      <Filter>Source\Conjure\Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
