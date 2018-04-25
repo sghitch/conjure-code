@@ -12,14 +12,11 @@ using namespace std::placeholders;
 
 std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>)>> functionMap;
 
-
-
-
-
 AAssistant::AAssistant()
 {
 
 	PrimaryActorTick.bCanEverTick = true;
+
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 	MyWatson = CreateDefaultSubobject<UWatson>(TEXT("Watson"));

@@ -6,7 +6,9 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "Assistant.h"
+//#include "Common/Microphone.h"
 #include "MyCharacter.generated.h"
+
 
 UCLASS()
 class CONJURE_API AMyCharacter : public ACharacter
@@ -16,17 +18,23 @@ class CONJURE_API AMyCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AMyCharacter();
-	
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Wrapper to invoke Watson microphone interface
+	//UPROPERTY() UMicrophone* MyMicrophone;
+	//void OnMicrophoneStart();
+	//void OnMicrophoneStop();
+
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	void CallMicrophone();
+	void StopMicrophone();
+	AAssistant* assistant = nullptr;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
