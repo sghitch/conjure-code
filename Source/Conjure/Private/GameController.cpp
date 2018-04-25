@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Asset.h"
 #include "GameController.h"
 
 
@@ -32,3 +33,41 @@ void UGameController::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
+void UGameController::TranslateSelectedAbsolute(FVector pos)
+{
+}
+
+void UGameController::RotateSelectedAbsolute(FVector rot)
+{
+}
+
+void UGameController::ScaleSelectedAbsolute(FVector scale)
+{
+}
+
+void UGameController::TranslateSelectedRelative(FVector pos)
+{
+}
+
+void UGameController::RotateSelectedRelative(FVector rot)
+{
+}
+
+void UGameController::ScaleSelectedRelative(FVector scale)
+{
+}
+
+AAsset* UGameController::GetSelectedActor()
+{
+	return nullptr;
+}
+
+AAsset* UGameController::SetSelectedActor(FString name)
+{
+	return nullptr;
+}
+
+AAsset* UGameController::GetActorAlongPath(FVector path, FVector origin)
+{
+	return nullptr;
+}
