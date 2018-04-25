@@ -27,42 +27,11 @@ AMyCharacter::AMyCharacter()
 	LeftHandComponent = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("LeftHand"));
 	LeftHandComponent->Hand = EControllerHand::Left;
 	LeftHandComponent->SetupAttachment(VROriginComp);
-	//LeftHandComponent->AttachTo(VROriginComp);
 
 	RightHandComponent = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("RightHand"));
 	RightHandComponent->Hand = EControllerHand::Right;
 	RightHandComponent->SetupAttachment(VROriginComp);
-	//RightHandComponent->AttachTo(VROriginComp);
-	
-	/*for (TObjectIterator<AStaticMeshActor> act; act; ++act)
-	{
-		FString actorName = act->GetName();
-		if (actorName.Equals("Assistant"))
-		{
-			assistant = Cast<AAssistant>(act);
-		}
 
-	}*/
-
-	
-	
-
-	//Initialize Watson Assistant and listening capabilities
-	//MyMicrophone = CreateDefaultSubobject<UMicrophone>(TEXT("Microphone"));
-	
-	//FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->GetActorForwardVector() * 1000;
-	//FVector actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() + actorForwardVectorMulDistance;
-	FVector default = { 0, 0, 0 };
-	
-	
-	//auto WatsonAssistant = GetWorld()->SpawnActor<AAssistant>(); //(AAssistant::StaticClass(), default, FRotator::ZeroRotator);
-	//WatsonAssistant->LatencyAudioResponse("I have been spawned into this world");
-	
-	//AAssistant *WatsonAssistant = GetWorld()->SpawnActor<AAssistant>;
-	//AAssistant WatsonAssistant = GetWorld()- //WORKING ON SPAWNING INSTANCE OF AASSISTANT
-	//AAssistant WatsonAssistant = AAssistant::AAssistant();
-	//AAssistant();
-	// watsonAssistant = AAssistant(); //TODO: not quite sure if this is how we do it but :D
 
 }
 
@@ -116,14 +85,3 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 }
 
 
-
-/*void AMyCharacter::OnMicrophoneStart()
-{
-	//AAssistant::OnMicrophoneStart();
-}
-
-void AMyCharacter::OnMicrophoneStop()
-{
-	
-	
-}*/

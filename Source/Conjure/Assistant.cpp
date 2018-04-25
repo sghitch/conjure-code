@@ -6,7 +6,8 @@
 #include <iostream>
 #include <map>
 #include <functional>
-
+#include "MyCharacter.h"
+#include "EngineUtils.h"
 
 using namespace std::placeholders;
 
@@ -71,7 +72,7 @@ void AAssistant::OnMicrophoneStart()
 	UE_LOG(LogTemp, Warning, TEXT("Microphone Starting..."));
 	std::cout << "Print test" << std::endl;
 	//TODO: this would be a good place to play sound and signal that the assistant is listening
-	LatencyAudioResponse("Listening"); //Occurs at the wrong time
+	//LatencyAudioResponse("Listening"); //Occurs at the wrong time
 	MyMicrophone->StartRecording();
 	UE_LOG(LogTemp, Warning, TEXT("1"));
 }
@@ -106,8 +107,9 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
 	float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
 	float z = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
-	FVector playerPos = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
-	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->GetActorForwardVector() * 1000;
+
+	
+	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation().Vector() * 1000;
 	FVector actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() + actorForwardVectorMulDistance;
 	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), actorLocation, FRotator::ZeroRotator);
 
