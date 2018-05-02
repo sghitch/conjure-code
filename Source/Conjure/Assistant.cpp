@@ -9,6 +9,8 @@
 #include "MyCharacter.h"
 #include "EngineUtils.h"
 
+#define VR //Indicates presence of VR equipment for testing
+
 using namespace std::placeholders;
 
 std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>)>> functionMap;
@@ -20,6 +22,7 @@ AAssistant::AAssistant()
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
+#ifdef VR
 	MyWatson = CreateDefaultSubobject<UWatson>(TEXT("Watson"));
 	MySpeaker = CreateDefaultSubobject<USpeaker>(TEXT("Speaker"));
 	MyMicrophone = CreateDefaultSubobject<UMicrophone>(TEXT("Microphone"));
@@ -27,6 +30,7 @@ AAssistant::AAssistant()
 	MyConversation = MyWatson->CreateConversation(FAuthentication("8241c345-75d7-4f90-b76f-09514a07b8d0", "gRnKcvq0jTo2"));
 	MyTextToSpeech = MyWatson->CreateTextToSpeech(FAuthentication("9481a3c9-f256-4f81-b8d6-8fa10b1d9bfe", "L3URP1vRu1BE"));
 	MySpeechToText = MyWatson->CreateSpeechToText(FAuthentication("9c33d075-f79a-43e3-bb61-36064e9b2c75", "Lm0SbXNcAjJV"));
+#endif
 
 	//TODO: initialize function map here?
 	initialize();
