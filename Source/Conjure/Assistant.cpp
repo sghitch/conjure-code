@@ -29,6 +29,8 @@ AAssistant::AAssistant()
 	MySpeechToText = MyWatson->CreateSpeechToText(FAuthentication("9c33d075-f79a-43e3-bb61-36064e9b2c75", "Lm0SbXNcAjJV"));
 #endif
 
+	GC = CreateDefaultSubobject<UGameController>(TEXT("GameController"));
+
 	//TODO: initialize function map here?
 	initialize();
 }
@@ -42,6 +44,9 @@ void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
 	Super::SetupPlayerInputComponent(InputComponent);
 	InputComponent->BindAction("Microphone", IE_Pressed, this, &AAssistant::OnMicrophoneStart);
 	InputComponent->BindAction("Microphone", IE_Released, this, &AAssistant::OnMicrophoneStop);
+
+	//Testing Functions
+	InputComponent->BindAction("SpawnTest", IE_Pressed, this, &AAssistant::TestSpawn);
 }
 
 void AAssistant::BeginPlay()
@@ -236,4 +241,9 @@ void AAssistant::OnTextToSpeechSynthesize(TSharedPtr<FTextToSpeechSynthesizeResp
 void AAssistant::OnTextToSpeechFailure(FString Error)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Text To Speech Error: %s"), *Error);
+}
+
+void AAssistant::TestSpawn()
+{
+
 }
