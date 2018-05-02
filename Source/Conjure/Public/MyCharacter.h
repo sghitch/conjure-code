@@ -38,6 +38,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Watson")
+	void SetupAssistant();
+
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")

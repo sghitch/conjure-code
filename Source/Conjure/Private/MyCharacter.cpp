@@ -40,18 +40,9 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	assistant = nullptr;
-	UWorld* world = GetWorld();
-	if (world != NULL) {
-		for (TActorIterator<AAssistant> Iter(world); Iter; ++Iter) {
-			assistant = *Iter;
-		}
-
-		if (assistant != nullptr) {
-			assistant->LatencyAudioResponse("I have been spawned into this world");
-		}
-
-	}
 }
+
+
 
 // Called every frame
 void AMyCharacter::Tick(float DeltaTime)
@@ -82,6 +73,19 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Microphone", IE_Pressed, this, &AMyCharacter::CallMicrophone);
 	PlayerInputComponent->BindAction("Microphone", IE_Released, this, &AMyCharacter::StopMicrophone);
+}
+
+void AMyCharacter::SetupAssistant()
+{
+	UWorld* world = GetWorld();
+	if (world != NULL) 
+	{
+		for (TActorIterator<AAssistant> Iter(world); Iter; ++Iter)
+			assistant = *Iter;
+
+		if (assistant != nullptr)
+			assistant->LatencyAudioResponse("I have been spawned into this world");
+	}
 }
 
 
