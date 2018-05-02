@@ -202,9 +202,15 @@
     <ClCompile Include="..\..\Source\Conjure\Private\GameController.cpp">
       <Filter>Source\Conjure\Private</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Conjure\Private\MyCharacter.cpp">
+      <Filter>Source\Conjure\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Conjure\Public\GameController.h">
+      <Filter>Source\Conjure\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Conjure\Public\MyCharacter.h">
       <Filter>Source\Conjure\Public</Filter>
     </ClInclude>
   </ItemGroup>

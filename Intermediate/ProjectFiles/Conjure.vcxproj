@@ -407,7 +407,9 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Conjure\Private\GameController.cpp" />
+    <ClCompile Include="..\..\Source\Conjure\Private\MyCharacter.cpp" />
     <ClInclude Include="..\..\Source\Conjure\Public\GameController.h" />
+    <ClInclude Include="..\..\Source\Conjure\Public\MyCharacter.h" />
     <None Include="..\..\Conjure.uproject" />
     <None Include="..\..\Source\Conjure.Target.cs" />
     <None Include="..\..\Source\ConjureEditor.Target.cs" />
