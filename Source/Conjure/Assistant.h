@@ -42,6 +42,8 @@ protected:
 	
 
 	// world modification methods
+	void enableTranslation(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
+	void enableScaling(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	// Watson

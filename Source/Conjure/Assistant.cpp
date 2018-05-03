@@ -115,6 +115,28 @@ void AAssistant::enableRotation(TArray<FString> intent_arr, std::map<FString, FS
 
 }
 
+void AAssistant::enableTranslation(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
+	if (GC->SelectedActor == nullptr) {
+		LatencyAudioResponse("No object selected");
+	}
+	else {
+		LatencyAudioResponse("object selected");
+		//FVector origPosition = AMyCharacter::GetRightHandPos();
+
+	}
+
+}
+
+void AAssistant::enableScaling(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
+	if (GC->SelectedActor == nullptr) {
+		LatencyAudioResponse("No object selected");
+	}
+	else {
+		LatencyAudioResponse("object selected");
+	}
+
+}
+
 void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
 	
 	if (entity_map.find(FString(TEXT("Object"))) == entity_map.end()) {
