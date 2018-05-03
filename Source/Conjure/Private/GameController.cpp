@@ -148,8 +148,7 @@ FVector UGameController::getDefaultLocation()
 	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
 	float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
 	float z = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
-	FVector playerPos = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
-	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->GetActorForwardVector() * 1000;
+	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation().Vector() * 1000;
 	FVector actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() + actorForwardVectorMulDistance;
 
 	return actorLocation;

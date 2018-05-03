@@ -113,32 +113,15 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 	}
 	FString object = entity_map.at(FString(TEXT("Object")));
 
-	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
-	float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
-	float z = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
-
-	
-	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation().Vector() * 1000;
-	FVector actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() + actorForwardVectorMulDistance;
-	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), actorLocation, FRotator::ZeroRotator);
-
-	UWorld* World = GetWorld();
 	FString path = "StaticMesh'";
 	path += FString(TEXT("/Game/StarterContent/Shapes/Shape_"));
-	
 	path += object;
 	path += FString(TEXT(".Shape_"));
 	path += object;
 	path += "'";
 	FName pathName = FName(*path);
-	auto obj = LoadObjFromPath<UStaticMesh>(pathName);
-	TArray<UStaticMeshComponent*> Components;
-	spawnedActor->GetComponents<UStaticMeshComponent>(Components);
-	for (int32 i = 0; i<Components.Num(); i++)
-	{
-		UStaticMeshComponent* StaticMeshComponent = Components[i];
-		StaticMeshComponent->SetStaticMesh(obj);
-	}
+
+	GC->CreateObject(pathName);
 }
 
 
