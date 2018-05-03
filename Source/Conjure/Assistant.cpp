@@ -40,8 +40,8 @@ AAssistant::AAssistant()
 void AAssistant::initialize() {
 	functionMap[FString(TEXT("createObject"))] = std::bind(&AAssistant::createObject, this, _1, _2);
 	functionMap[FString(TEXT("enableRotation"))] = std::bind(&AAssistant::enableRotation, this, _1, _2);
-	functionMap[FString(TEXT("enableTranslation"))] = std::bind(&AAssistant::enableRotation, this, _1, _2);
-	functionMap[FString(TEXT("enableScaling"))] = std::bind(&AAssistant::enableRotation, this, _1, _2);
+	functionMap[FString(TEXT("enableTranslation"))] = std::bind(&AAssistant::enableTranslation, this, _1, _2);
+	functionMap[FString(TEXT("enableScaling"))] = std::bind(&AAssistant::enableScaling, this, _1, _2);
 	RotationMode = false;
 	ScalingMode = false;
 	TranslationMode = false;
