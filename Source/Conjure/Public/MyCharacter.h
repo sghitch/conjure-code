@@ -84,4 +84,5 @@ private:
 		class UMotionControllerComponent* RightHandComponent;
 
 	FVector oldPos;
+	FRotator oldRot;
 };

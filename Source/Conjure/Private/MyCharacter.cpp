@@ -82,10 +82,13 @@ void AMyCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	FVector curPos = RightHandComponent->GetComponentLocation();
+	FRotator curRot = RightHandComponent->GetComponentRotation();
+	
 	if (TriggerPressed && assistant->GetRotateFlag()) {
-		//TODO: Stephen suggested using the rotation of the hand controllers
-		//I think that you could also use normalized difference for this,
-		//But pass in the rotation coordinates of the controllers instead of the position
+		FVector oldRotVec = FVector(oldRot.Pitch, oldRot.Yaw, oldRot.Roll);
+		FVector curRotVec = FVector(curRot.Pitch, curRot.Yaw, curRot.Roll);
+		assistant->GC->RotateSelectedRelative(
+			GetNormalizedDifference(oldRotVec, curRotVec));
 	}
 
 	if (TriggerPressed && assistant->GetScaleFlag()) {
@@ -97,7 +100,9 @@ void AMyCharacter::Tick(float DeltaTime)
 		assistant->GC->TranslateSelectedRelative(
 			GetNormalizedDifference(oldPos, curPos) * TRANSLATION_FACTOR);
 	}
+
 	oldPos = curPos;
+	oldRot = curRot;
 }
 
 void AMyCharacter::CallMicrophone()
