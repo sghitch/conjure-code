@@ -40,6 +40,9 @@ AAssistant::AAssistant()
 void AAssistant::initialize() {
 	functionMap[FString(TEXT("createObject"))] = std::bind(&AAssistant::createObject, this, _1, _2);
 	functionMap[FString(TEXT("enableRotation"))] = std::bind(&AAssistant::enableRotation, this, _1, _2);
+	RotationMode = false;
+	ScalingMode = false;
+	TranslationMode = false;
 }
 
 void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
@@ -159,8 +162,17 @@ void AAssistant::enableScaling(TArray<FString> intent_arr, std::map<FString, FSt
 
 }
 
+void AAssistant::clearEditingFlags()
+{
+	RotationMode = false;
+	ScalingMode = false;
+	TranslationMode = false;
+}
+
 void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
 	
+	clearEditingFlags();
+
 	if (entity_map.find(FString(TEXT("Object"))) == entity_map.end()) {
 		//This means that no object was specified
 	}
