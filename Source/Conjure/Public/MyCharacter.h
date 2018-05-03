@@ -43,7 +43,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Watson")
 	void SetupAssistant();
 
-	
+	UFUNCTION(BlueprintCallable, Category = "GameController")
+	void SetSelectedActor(AActor* selectedActor);
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")

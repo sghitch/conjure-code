@@ -14,7 +14,6 @@
 using namespace std::placeholders;
 
 std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>)>> functionMap;
-//UGameController *gameController;
 
 AAssistant::AAssistant()
 {
@@ -31,8 +30,9 @@ AAssistant::AAssistant()
 	MyConversation = MyWatson->CreateConversation(FAuthentication("8241c345-75d7-4f90-b76f-09514a07b8d0", "gRnKcvq0jTo2"));
 	MyTextToSpeech = MyWatson->CreateTextToSpeech(FAuthentication("9481a3c9-f256-4f81-b8d6-8fa10b1d9bfe", "L3URP1vRu1BE"));
 	MySpeechToText = MyWatson->CreateSpeechToText(FAuthentication("9c33d075-f79a-43e3-bb61-36064e9b2c75", "Lm0SbXNcAjJV"));
-	//*gameController = UGameController();
 #endif
+
+	GC = CreateDefaultSubobject<UGameController>(TEXT("GameController"));
 
 	//TODO: initialize function map here?
 	initialize();
@@ -48,6 +48,9 @@ void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
 	Super::SetupPlayerInputComponent(InputComponent);
 	InputComponent->BindAction("Microphone", IE_Pressed, this, &AAssistant::OnMicrophoneStart);
 	InputComponent->BindAction("Microphone", IE_Released, this, &AAssistant::OnMicrophoneStop);
+
+	//Testing Functions
+	InputComponent->BindAction("SpawnTest", IE_Pressed, this, &AAssistant::TestSpawn);
 }
 
 void AAssistant::BeginPlay()
@@ -103,7 +106,7 @@ void AAssistant::OnMicrophoneStop()
 }
 
 void AAssistant::enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
-	if (UGameController::selectedActor == nullptr) {
+	if (GC->SelectedActor == nullptr) {
 		LatencyAudioResponse("No object selected"); 
 	}
 	else {
@@ -119,32 +122,15 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 	}
 	FString object = entity_map.at(FString(TEXT("Object")));
 
-	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
-	float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
-	float z = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
-
-	
-	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation().Vector() * 1000;
-	FVector actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() + actorForwardVectorMulDistance;
-	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), actorLocation, FRotator::ZeroRotator);
-
-	UWorld* World = GetWorld();
 	FString path = "StaticMesh'";
 	path += FString(TEXT("/Game/StarterContent/Shapes/Shape_"));
-	
 	path += object;
 	path += FString(TEXT(".Shape_"));
 	path += object;
 	path += "'";
 	FName pathName = FName(*path);
-	auto obj = LoadObjFromPath<UStaticMesh>(pathName);
-	TArray<UStaticMeshComponent*> Components;
-	spawnedActor->GetComponents<UStaticMeshComponent>(Components);
-	for (int32 i = 0; i<Components.Num(); i++)
-	{
-		UStaticMeshComponent* StaticMeshComponent = Components[i];
-		StaticMeshComponent->SetStaticMesh(obj);
-	}
+
+	GC->CreateObject(pathName);
 }
 
 
@@ -251,4 +237,9 @@ void AAssistant::OnTextToSpeechSynthesize(TSharedPtr<FTextToSpeechSynthesizeResp
 void AAssistant::OnTextToSpeechFailure(FString Error)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Text To Speech Error: %s"), *Error);
+}
+
+void AAssistant::TestSpawn()
+{
+
 }

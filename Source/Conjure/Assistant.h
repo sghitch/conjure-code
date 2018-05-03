@@ -1,12 +1,13 @@
 #pragma once
 
+#include <map>
+
+#include "Common/Microphone.h"
+#include "Common/Speaker.h"
 #include "CoreMinimal.h"
+#include "GameController.h"
 #include "GameFramework/Pawn.h"
 #include "Watson.h"
-#include <map>
-#include "Common/Speaker.h"
-#include "Common/Microphone.h"
-#include "GameController.h"
 #include "Assistant.generated.h"
 
 
@@ -28,7 +29,8 @@ public:
 	void OnMicrophoneStart();
 	void OnMicrophoneStop();
 
-	
+	//GC
+	UPROPERTY() UGameController* GC;
 
 protected:
 	// Speaker
@@ -98,4 +100,7 @@ protected:
 
 		return Cast<ObjClass>(StaticLoadObject(ObjClass::StaticClass(), NULL, *Path.ToString()));
 	}
+
+	//Test Functions
+	void TestSpawn();
 };
