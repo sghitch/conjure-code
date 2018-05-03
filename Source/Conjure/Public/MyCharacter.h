@@ -51,6 +51,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "GameController")
 	void SetSelectedActor(AActor* selectedActor);
+
+	FVector GetLeftHandPos();
+	FVector GetRightHandPos();
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
@@ -69,4 +72,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 		class UMotionControllerComponent* RightHandComponent;
+
+	FVector oldPos;
 };

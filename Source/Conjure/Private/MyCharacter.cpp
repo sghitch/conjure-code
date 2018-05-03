@@ -42,13 +42,65 @@ void AMyCharacter::BeginPlay()
 	assistant = nullptr;
 }
 
+FVector AMyCharacter::GetLeftHandPos()
+{
+	return LeftHandComponent->GetComponentLocation();
+}
 
+FVector AMyCharacter::GetRightHandPos()
+{
+	return RightHandComponent->GetComponentLocation();
+}
+
+/* Calculates the difference between old and new position
+* Finds the primary axis that has the most difference*/
+FVector AMyCharacter::GetNormalizedDifference(FVector oldPos, FVector newPos) {
+	float deltaX = newPos.X - oldPos.X;
+	float deltaY = newPos.Y - oldPos.Y;
+	float deltaZ = newPos.Z - oldPos.Z;
+
+	FVector normalizedVec;
+
+	//Since X has the biggest difference, normalize along x axis
+	if ((deltaX >= deltaY) && (deltaX >= deltaZ)) {
+		normalizedVec = FVector(deltaX, 0.0f, 0.0f);
+	}
+
+	//Since Y has the biggest difference, normalize along y axis
+	else if ((deltaY > deltaX) && (deltaY > deltaZ)) {
+		normalizedVec = FVector(0.0f, deltaY, 0.0f);
+	}
+
+	//Since Z has the biggest difference, normalize along z axis
+	else {
+		normalizedVec = FVector(0.0f, 0.0f, deltaZ);
+	}
+
+	return normalizedVec;
+}
 
 // Called every frame
 void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FVector curPos = RightHandComponent->GetComponentLocation();
+	if (TriggerPressed && assistant->GetRotateFlag()) {
+		//TODO: Stephen suggested using the rotation of the hand controllers
+		//I think that you could also use normalized difference for this,
+		//But pass in the rotation coordinates of the controllers instead of the position
+	}
+
+	if (TriggerPressed && assistant->GetScaleFlag()) {
+		assistant->GC->ScaleSelectedRelative(
+			GetNormalizedDifference(oldPos, curPos));
+	}
+
+	if (TriggerPressed && assistant->GetTranslateFlag()) {
+		assistant->GC->TranslateSelectedRelative(
+			GetNormalizedDifference(oldPos, curPos));
+	}
+	oldPos = curPos;
 }
 
 void AMyCharacter::CallMicrophone()
