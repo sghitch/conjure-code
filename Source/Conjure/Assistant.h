@@ -11,6 +11,8 @@
 #include "Assistant.generated.h"
 
 
+
+
 //Enter Your Project Name Below
 UCLASS()
 class CONJURE_API AAssistant : public APawn
@@ -23,6 +25,9 @@ public:
 	void Tick(float DeltaTime) override;
 	void initialize();
 	void SetupPlayerInputComponent(class UInputComponent* InputComponent);
+	void LatencyAudioResponse(FString message);
+	void OnMicrophoneStart();
+	void OnMicrophoneStop();
 
 protected:
 	//GC
@@ -33,9 +38,8 @@ protected:
 
 	// Microphone
 	UPROPERTY() UMicrophone* MyMicrophone;
-	void LatencyAudioResponse(FString message);
-	void OnMicrophoneStart();
-	void OnMicrophoneStop();
+	
+	
 
 	// world modification methods
 	void createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
