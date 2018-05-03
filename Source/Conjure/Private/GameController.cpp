@@ -84,6 +84,7 @@ void UGameController::ScaleSelectedRelative(FVector scale)
 {
 	if (SelectedActor != nullptr)
 	{
+		scale += FVector(1.0f, 1.0f, 1.0f);
 		SelectedActor->SetActorScale3D(scale);
 	}
 }

@@ -55,25 +55,22 @@ FVector AMyCharacter::GetRightHandPos()
 /* Calculates the difference between old and new position
 * Finds the primary axis that has the most difference*/
 FVector AMyCharacter::GetNormalizedDifference(FVector oldPos, FVector newPos) {
-	float deltaX = newPos.X - oldPos.X;
-	float deltaY = newPos.Y - oldPos.Y;
-	float deltaZ = newPos.Z - oldPos.Z;
-
+	auto delta = newPos - oldPos;
 	FVector normalizedVec;
 
 	//Since X has the biggest difference, normalize along x axis
-	if ((deltaX >= deltaY) && (deltaX >= deltaZ)) {
-		normalizedVec = FVector(deltaX, 0.0f, 0.0f);
+	if ((FMath::Abs(delta.X) >= FMath::Abs(delta.Y)) && (FMath::Abs(delta.X) >= FMath::Abs(delta.Z))) {
+		normalizedVec = FVector(delta.X, 0.0f, 0.0f);
 	}
 
 	//Since Y has the biggest difference, normalize along y axis
-	else if ((deltaY > deltaX) && (deltaY > deltaZ)) {
-		normalizedVec = FVector(0.0f, deltaY, 0.0f);
+	else if ((FMath::Abs(delta.Y) > FMath::Abs(delta.X)) && (FMath::Abs(delta.Y) > FMath::Abs(delta.Z))) {
+		normalizedVec = FVector(0.0f, delta.Y, 0.0f);
 	}
 
 	//Since Z has the biggest difference, normalize along z axis
 	else {
-		normalizedVec = FVector(0.0f, 0.0f, deltaZ);
+		normalizedVec = FVector(0.0f, 0.0f, delta.Z);
 	}
 
 	return normalizedVec;
@@ -93,12 +90,12 @@ void AMyCharacter::Tick(float DeltaTime)
 
 	if (TriggerPressed && assistant->GetScaleFlag()) {
 		assistant->GC->ScaleSelectedRelative(
-			GetNormalizedDifference(oldPos, curPos));
+			GetNormalizedDifference(oldPos, curPos) * SCALING_FACTOR);
 	}
 
 	if (TriggerPressed && assistant->GetTranslateFlag()) {
 		assistant->GC->TranslateSelectedRelative(
-			GetNormalizedDifference(oldPos, curPos));
+			GetNormalizedDifference(oldPos, curPos) * TRANSLATION_FACTOR);
 	}
 	oldPos = curPos;
 }

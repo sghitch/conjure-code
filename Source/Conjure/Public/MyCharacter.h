@@ -54,6 +54,16 @@ public:
 
 	FVector GetLeftHandPos();
 	FVector GetRightHandPos();
+
+	//Scaling factors
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TransformFactors")
+	FVector TRANSLATION_FACTOR = FVector(10.0f, 10.0f, 10.0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TransformFactors")
+	FVector SCALING_FACTOR = FVector(10.0f, 10.0f, 10.0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TransformFactors")
+	FVector ROTATION_FACTOR = FVector(10.0f, 10.0f, 10.0f);
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
