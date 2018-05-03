@@ -30,6 +30,9 @@ public:
 	AAsset* SetSelectedActor(FString name);
 	AAsset* GetActorAlongPath(FVector path, FVector origin);
 
+	UPROPERTY(BlueprintReadWrite, Category = MyCharacter)
+	AActor* selectedActor = nullptr;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

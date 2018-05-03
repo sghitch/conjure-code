@@ -14,6 +14,7 @@
 using namespace std::placeholders;
 
 std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>)>> functionMap;
+//UGameController *gameController;
 
 AAssistant::AAssistant()
 {
@@ -30,6 +31,7 @@ AAssistant::AAssistant()
 	MyConversation = MyWatson->CreateConversation(FAuthentication("8241c345-75d7-4f90-b76f-09514a07b8d0", "gRnKcvq0jTo2"));
 	MyTextToSpeech = MyWatson->CreateTextToSpeech(FAuthentication("9481a3c9-f256-4f81-b8d6-8fa10b1d9bfe", "L3URP1vRu1BE"));
 	MySpeechToText = MyWatson->CreateSpeechToText(FAuthentication("9c33d075-f79a-43e3-bb61-36064e9b2c75", "Lm0SbXNcAjJV"));
+	//*gameController = UGameController();
 #endif
 
 	//TODO: initialize function map here?
@@ -38,6 +40,7 @@ AAssistant::AAssistant()
 
 void AAssistant::initialize() {
 	functionMap[FString(TEXT("createObject"))] = std::bind(&AAssistant::createObject, this, _1, _2);
+	functionMap[FString(TEXT("enableRotation"))] = std::bind(&AAssistant::enableRotation, this, _1, _2);
 }
 
 void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
@@ -99,7 +102,15 @@ void AAssistant::OnMicrophoneStop()
 	}
 }
 
+void AAssistant::enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
+	if (UGameController::selectedActor == nullptr) {
+		LatencyAudioResponse("No object selected"); 
+	}
+	else {
+		LatencyAudioResponse("object selected");
+	}
 
+}
 
 void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
 	
