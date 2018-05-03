@@ -42,14 +42,10 @@ void UGameController::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 void UGameController::TranslateSelectedAbsolute(FVector pos)
 {
-}
-
-void UGameController::RotateSelectedAbsolute(FVector rot)
-{
-}
-
-void UGameController::ScaleSelectedAbsolute(FVector scale)
-{
+	if (selectedActor != nullptr) 
+	{
+		selectedActor->SetActorLocation(pos);
+	}
 }
 
 #pragma endregion TransformAbsoulte
@@ -58,17 +54,38 @@ void UGameController::ScaleSelectedAbsolute(FVector scale)
 
 void UGameController::TranslateSelectedRelative(FVector pos)
 {
+	if (selectedActor != nullptr)
+	{
+		auto oldpos = selectedActor->GetActorLocation();
 
+		oldpos.X += pos.X;
+		oldpos.Y += pos.Y;
+		oldpos.Z += pos.Z;
+
+		selectedActor->SetActorLocation(oldpos);
+	}
 }
 
 void UGameController::RotateSelectedRelative(FVector rot)
 {
+	if (selectedActor != nullptr)
+	{
+		auto oldrot = selectedActor->GetActorRotation();
 
+		oldrot.Pitch += rot.X;
+		oldrot.Yaw += rot.Y;
+		oldrot.Roll += rot.Z;
+		 
+		selectedActor->SetActorRotation(oldrot.Quaternion());
+	}
 }
 
 void UGameController::ScaleSelectedRelative(FVector scale)
 {
-
+	if (selectedActor != nullptr)
+	{
+		selectedActor->SetActorScale3D(scale);
+	}
 }
 
 #pragma endregion Transform Relative
@@ -77,12 +94,27 @@ void UGameController::ScaleSelectedRelative(FVector scale)
 
 AAsset* UGameController::GetSelectedActor()
 {
-	return nullptr;
+	return selectedActor;
 }
 
 AAsset* UGameController::SetSelectedActor(FString name)
 {
-	return nullptr;
+	for (TActorIterator<AAsset> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	{
+		// Same as with the Object Iterator, access the subclass instance with the * or -> operators.
+		AAsset *asset = *ActorItr;
+		if (asset->GetName().Equals(name))
+		{
+			selectedActor = asset;
+		}
+	}
+
+	return selectedActor;
+}
+
+AAsset * UGameController::SetSelectedActor(AActor actor)
+{
+	return SetSelectedActor(actor.GetName());
 }
 
 AAsset* UGameController::GetActorAlongPath(FVector path, FVector origin)

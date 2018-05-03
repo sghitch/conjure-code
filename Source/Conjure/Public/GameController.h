@@ -5,6 +5,7 @@
 #include "Asset.h"
 #include "Components/ActorComponent.h"
 #include "CoreMinimal.h"
+#include "EngineUtils.h"
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
@@ -26,8 +27,6 @@ public:
 
 	//TransformAbsolute
 	void TranslateSelectedAbsolute(FVector pos);
-	void RotateSelectedAbsolute(FVector rot);
-	void ScaleSelectedAbsolute(FVector scale);
 
 	//TransformRelative
 	void TranslateSelectedRelative(FVector pos);
@@ -37,6 +36,7 @@ public:
 	//Selection
 	AAsset* GetSelectedActor();
 	AAsset* SetSelectedActor(FString name);
+	AAsset* SetSelectedActor(AActor actor);
 	AAsset* GetActorAlongPath(FVector path, FVector origin);
 
 	AAsset* CreateObject(FName pathName);
@@ -56,4 +56,5 @@ protected:
 
 private:
 	FVector getDefaultLocation();
+	AAsset* selectedActor = nullptr;
 };
