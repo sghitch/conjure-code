@@ -36,6 +36,18 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void CallMicrophone();
 	void StopMicrophone();
+	void SetTriggerFlagTrue();
+	void SetTriggerFlagFalse();
+	bool TriggerPressed;
+
+	void SetTranslationFlagTrue();
+	void SetScalingFlagTrue();
+	void SetRotationFlagTrue();
+	void ClearEditingFlags();
+	bool TranslationMode; //TODO: eventually make these enums
+	bool ScalingMode;
+	bool RotationMode;
+	
 	AAssistant* assistant = nullptr;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

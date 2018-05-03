@@ -67,12 +67,53 @@ void AMyCharacter::StopMicrophone()
 
 }
 
+void AMyCharacter::SetTriggerFlagTrue() //TODO: make this into a lambda
+{
+	TriggerPressed = true;
+}
+
+void AMyCharacter::SetTriggerFlagFalse()
+{
+	TriggerPressed = false;
+}
+
+void AMyCharacter::SetTranslationFlagTrue()
+{
+	RotationMode = false;
+	TranslationMode = true;
+	ScalingMode = false;
+}
+
+void AMyCharacter::SetScalingFlagTrue()
+{
+	RotationMode = false;
+	TranslationMode = false;
+	ScalingMode = true;
+}
+
+void AMyCharacter::SetRotationFlagTrue()
+{
+	RotationMode = true;
+	TranslationMode = false;
+	ScalingMode = false;
+}
+
+/* This is called when a new object is being created*/
+void AMyCharacter::ClearEditingFlags()
+{
+	RotationMode = false;
+	TranslationMode = false;
+	ScalingMode = false;
+}
+
 // Called to bind functionality to input
 void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Microphone", IE_Pressed, this, &AMyCharacter::CallMicrophone);
 	PlayerInputComponent->BindAction("Microphone", IE_Released, this, &AMyCharacter::StopMicrophone);
+	PlayerInputComponent->BindAction("Trigger", IE_Pressed, this, &AMyCharacter::SetTriggerFlagTrue);
+	PlayerInputComponent->BindAction("Trigger", IE_Released, this, &AMyCharacter::SetTriggerFlagFalse);
 }
 
 void AMyCharacter::SetupAssistant()
