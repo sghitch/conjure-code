@@ -29,6 +29,11 @@ public:
 	void OnMicrophoneStart();
 	void OnMicrophoneStop();
 
+	//Called by MyCharacter
+	bool GetTranslateFlag();
+	bool GetScaleFlag();
+	bool GetRotateFlag();
+
 	//GC
 	UPROPERTY() UGameController* GC;
 
@@ -39,7 +44,13 @@ protected:
 	// Microphone
 	UPROPERTY() UMicrophone* MyMicrophone;
 	
+	//Info needed by MyCharacter
+	bool TranslationMode; //TODO: eventually make these enums
+	bool ScalingMode;
+	bool RotationMode;
 	
+	//MyCharacter
+	void SetupMyCharacter();
 
 	// world modification methods
 	void enableTranslation(TArray<FString> intent_arr, std::map<FString, FString> entity_map);

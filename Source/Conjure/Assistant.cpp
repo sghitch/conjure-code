@@ -104,12 +104,30 @@ void AAssistant::OnMicrophoneStop()
 	}
 }
 
+bool AAssistant::GetRotateFlag()
+{
+	return RotationMode;
+}
+
+bool AAssistant::GetScaleFlag()
+{
+	return ScalingMode;
+}
+
+bool AAssistant::GetTranslateFlag()
+{
+	return TranslationMode;
+}
+
 void AAssistant::enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
 	if (GC->SelectedActor == nullptr) {
 		LatencyAudioResponse("No object selected"); 
 	}
 	else {
 		LatencyAudioResponse("object selected");
+		RotationMode = true;
+		ScalingMode = false;
+		TranslationMode = false;
 	}
 
 }
@@ -120,7 +138,9 @@ void AAssistant::enableTranslation(TArray<FString> intent_arr, std::map<FString,
 	}
 	else {
 		LatencyAudioResponse("object selected");
-		//FVector origPosition = AMyCharacter::GetRightHandPos();
+		RotationMode = false;
+		ScalingMode = false;
+		TranslationMode = true;
 
 	}
 
@@ -132,6 +152,9 @@ void AAssistant::enableScaling(TArray<FString> intent_arr, std::map<FString, FSt
 	}
 	else {
 		LatencyAudioResponse("object selected");
+		RotationMode = false;
+		ScalingMode = true;
+		TranslationMode = false;
 	}
 
 }
