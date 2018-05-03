@@ -77,34 +77,6 @@ void AMyCharacter::SetTriggerFlagFalse()
 	TriggerPressed = false;
 }
 
-void AMyCharacter::SetTranslationFlagTrue()
-{
-	RotationMode = false;
-	TranslationMode = true;
-	ScalingMode = false;
-}
-
-void AMyCharacter::SetScalingFlagTrue()
-{
-	RotationMode = false;
-	TranslationMode = false;
-	ScalingMode = true;
-}
-
-void AMyCharacter::SetRotationFlagTrue()
-{
-	RotationMode = true;
-	TranslationMode = false;
-	ScalingMode = false;
-}
-
-/* This is called when a new object is being created*/
-void AMyCharacter::ClearEditingFlags()
-{
-	RotationMode = false;
-	TranslationMode = false;
-	ScalingMode = false;
-}
 
 // Called to bind functionality to input
 void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

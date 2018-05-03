@@ -40,13 +40,7 @@ public:
 	void SetTriggerFlagFalse();
 	bool TriggerPressed;
 
-	void SetTranslationFlagTrue();
-	void SetScalingFlagTrue();
-	void SetRotationFlagTrue();
-	void ClearEditingFlags();
-	bool TranslationMode; //TODO: eventually make these enums
-	bool ScalingMode;
-	bool RotationMode;
+	FVector GetNormalizedDifference(FVector oldPos, FVector newPos);
 	
 	AAssistant* assistant = nullptr;
 	// Called to bind functionality to input

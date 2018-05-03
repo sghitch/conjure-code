@@ -6,7 +6,6 @@
 #include <iostream>
 #include <map>
 #include <functional>
-#include "MyCharacter.h"
 #include "EngineUtils.h"
 
 #define VR //Indicates presence of VR equipment for testing
