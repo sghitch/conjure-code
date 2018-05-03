@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "GameController.h"
-#include "Asset.h"
+#include <ExceptionHandling.h>
 
+#pragma region UE4 Generated
 
 // Sets default values for this component's properties
 UGameController::UGameController()
@@ -33,41 +34,90 @@ void UGameController::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
+#pragma endregion UE4 Generated
+
+#pragma region Public Methods
+
+#pragma region TransformAbsolute
+
 void UGameController::TranslateSelectedAbsolute(FVector pos)
 {
+	if (SelectedActor != nullptr) 
+	{
+		SelectedActor->SetActorLocation(pos);
+	}
 }
 
-void UGameController::RotateSelectedAbsolute(FVector rot)
-{
-}
+#pragma endregion TransformAbsoulte
 
-void UGameController::ScaleSelectedAbsolute(FVector scale)
-{
-}
+#pragma region TransformRelative
 
 void UGameController::TranslateSelectedRelative(FVector pos)
 {
+	if (SelectedActor != nullptr)
+	{
+		auto oldpos = SelectedActor->GetActorLocation();
+
+		oldpos.X += pos.X;
+		oldpos.Y += pos.Y;
+		oldpos.Z += pos.Z;
+
+		SelectedActor->SetActorLocation(oldpos);
+	}
 }
 
 void UGameController::RotateSelectedRelative(FVector rot)
 {
+	if (SelectedActor != nullptr)
+	{
+		auto oldrot = SelectedActor->GetActorRotation();
+
+		oldrot.Pitch += rot.X;
+		oldrot.Yaw += rot.Y;
+		oldrot.Roll += rot.Z;
+		 
+		SelectedActor->SetActorRotation(oldrot.Quaternion());
+	}
 }
 
 void UGameController::ScaleSelectedRelative(FVector scale)
 {
+	if (SelectedActor != nullptr)
+	{
+		SelectedActor->SetActorScale3D(scale);
+	}
 }
 
-AAsset* UGameController::GetSelectedActor()
+#pragma endregion Transform Relative
+
+AAsset * UGameController::CreateObject(FName pathName)
 {
-	return nullptr;
+	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), getDefaultLocation(), FRotator::ZeroRotator);
+	auto obj = LoadObjFromPath<UStaticMesh>(pathName);
+	TArray<UStaticMeshComponent*> Components;
+	spawnedActor->GetComponents<UStaticMeshComponent>(Components);
+	for (int32 i = 0; i<Components.Num(); i++)
+	{
+		UStaticMeshComponent* StaticMeshComponent = Components[i];
+		StaticMeshComponent->SetStaticMesh(obj);
+	}
+
+	return spawnedActor;
 }
 
-AAsset* UGameController::SetSelectedActor(FString name)
+#pragma endregion Public Methods
+
+#pragma region Private Methods
+
+FVector UGameController::getDefaultLocation()
 {
-	return nullptr;
+	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
+	float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
+	float z = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
+	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation().Vector() * 1000;
+	FVector actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() + actorForwardVectorMulDistance;
+
+	return actorLocation;
 }
 
-AAsset* UGameController::GetActorAlongPath(FVector path, FVector origin)
-{
-	return nullptr;
-}
+#pragma endregion Private Methods

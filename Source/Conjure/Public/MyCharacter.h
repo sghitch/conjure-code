@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "Assistant.h"
+#include "Asset.h"
+
 //#include "Common/Microphone.h"
 #include "MyCharacter.generated.h"
 
@@ -41,6 +43,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Watson")
 	void SetupAssistant();
 
+	UFUNCTION(BlueprintCallable, Category = "GameController")
+	void SetSelectedActor(AActor* selectedActor);
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")

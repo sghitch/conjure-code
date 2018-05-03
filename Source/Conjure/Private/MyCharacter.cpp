@@ -88,4 +88,12 @@ void AMyCharacter::SetupAssistant()
 	}
 }
 
+void AMyCharacter::SetSelectedActor(AActor* selectedActor)
+{
+	if (assistant != nullptr)
+	{
+		assistant->GC->SelectedActor = selectedActor;
+	}
+}
+
 

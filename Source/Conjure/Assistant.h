@@ -1,11 +1,13 @@
 #pragma once
 
+#include <map>
+
+#include "Common/Microphone.h"
+#include "Common/Speaker.h"
 #include "CoreMinimal.h"
+#include "GameController.h"
 #include "GameFramework/Pawn.h"
 #include "Watson.h"
-#include <map>
-#include "Common/Speaker.h"
-#include "Common/Microphone.h"
 #include "Assistant.generated.h"
 
 
@@ -27,6 +29,9 @@ public:
 	void OnMicrophoneStart();
 	void OnMicrophoneStop();
 
+	//GC
+	UPROPERTY() UGameController* GC;
+
 protected:
 	// Speaker
 	UPROPERTY() USpeaker* MySpeaker;
@@ -38,7 +43,7 @@ protected:
 
 	// world modification methods
 	void createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
-
+	void enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	// Watson
 	UPROPERTY() UWatson* MyWatson;
 
@@ -95,4 +100,7 @@ protected:
 
 		return Cast<ObjClass>(StaticLoadObject(ObjClass::StaticClass(), NULL, *Path.ToString()));
 	}
+
+	//Test Functions
+	void TestSpawn();
 };
