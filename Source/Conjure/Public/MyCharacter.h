@@ -83,6 +83,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 		class UMotionControllerComponent* RightHandComponent;
 
+	FVector oldScale;
 	FVector oldPos;
 	FRotator oldRot;
 };
