@@ -93,7 +93,7 @@ void AMyCharacter::Tick(float DeltaTime)
 
 	if (TriggerPressed && assistant->GetScaleFlag()) {
 		assistant->GC->ScaleSelectedRelative(
-			GetNormalizedDifference(oldPos, curPos) * SCALING_FACTOR);
+			GetNormalizedDifference(oldScale, curPos) * SCALING_FACTOR);
 	}
 
 	if (TriggerPressed && assistant->GetTranslateFlag()) {
@@ -124,6 +124,7 @@ void AMyCharacter::StopMicrophone()
 void AMyCharacter::SetTriggerFlagTrue() //TODO: make this into a lambda
 {
 	TriggerPressed = true;
+	oldScale = RightHandComponent->GetComponentLocation();
 }
 
 void AMyCharacter::SetTriggerFlagFalse()
