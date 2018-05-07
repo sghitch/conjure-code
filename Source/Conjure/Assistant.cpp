@@ -2,6 +2,8 @@
 #include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 #include "Asset.h"
 #include <iostream>
 #include <map>
@@ -45,6 +47,8 @@ void AAssistant::initialize() {
 	RotationMode = false;
 	ScalingMode = false;
 	TranslationMode = false;
+
+	InitializeSound();
 }
 
 void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
@@ -55,6 +59,25 @@ void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
 
 	//Testing Functions
 	InputComponent->BindAction("SpawnTest", IE_Pressed, this, &AAssistant::TestSpawn);
+}
+
+
+void AAssistant::InitializeSound()
+{
+	ConstructorHelpers::FObjectFinder<USoundCue> micStartSound(TEXT("'/Game/mic-start.mic-start'"));
+	micStartCue = micStartSound.Object;
+	micStartComponent = CreateDefaultSubobject <UAudioComponent>(TEXT("micStartComponent"));
+	micStartComponent->bAutoActivate = false;
+
+}
+
+void AAssistant::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (micStartCue->IsValidLowLevelFast()) {
+		micStartComponent->SetSound(micStartCue);
+	}
 }
 
 void AAssistant::BeginPlay()
@@ -83,6 +106,7 @@ void AAssistant::LatencyAudioResponse(FString message)
 
 void AAssistant::OnMicrophoneStart()
 {
+	micStartComponent->Play();
 	UE_LOG(LogTemp, Warning, TEXT("Microphone Starting..."));
 	std::cout << "Print test" << std::endl;
 	//TODO: this would be a good place to play sound and signal that the assistant is listening

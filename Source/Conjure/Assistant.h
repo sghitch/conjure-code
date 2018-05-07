@@ -4,6 +4,8 @@
 
 #include "Common/Microphone.h"
 #include "Common/Speaker.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 #include "CoreMinimal.h"
 #include "GameController.h"
 #include "GameFramework/Pawn.h"
@@ -36,6 +38,22 @@ public:
 
 	//GC
 	UPROPERTY() UGameController* GC;
+
+	//Latency Feedback
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		USoundCue * micStartCue;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		USoundCue *micStopCue;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		UAudioComponent *micStartComponent;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		UAudioComponent *micStopComponent;
+
+	void InitializeSound();
+	void PostInitializeComponents();
 
 protected:
 	// Speaker
