@@ -63,7 +63,7 @@ void AAssistant::BeginPlay()
 	Super::BeginPlay();
 	start_time = time(0);
 	
-	myfile.open("command_success.txt"); //curently saves in C:\Program Files\Epic Games\UE_4.18\Engine\Binaries\Win64 folder
+	myfile.open("command_success.txt"); //curently saves in C:\Program Files\Epic Games\UE_4.18\Engine\Binaries\Win64 folder.
 
 }
 
