@@ -8,6 +8,9 @@
 #include "GameController.h"
 #include "GameFramework/Pawn.h"
 #include "Watson.h"
+#include <iostream>
+#include <fstream>
+#include <time.h>
 #include "Assistant.generated.h"
 
 
@@ -36,6 +39,8 @@ public:
 
 	//GC
 	UPROPERTY() UGameController* GC;
+
+	std::ofstream myfile;
 
 protected:
 	// Speaker
@@ -117,4 +122,9 @@ protected:
 
 	//Test Functions
 	void TestSpawn();
+
+	time_t start_time = time(0);
+	int successful_calls = 0;
+	int failed_calls = 0;
+	int minute = 0;
 };
