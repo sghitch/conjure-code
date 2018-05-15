@@ -69,6 +69,11 @@ void AAssistant::InitializeSound()
 	micStartComponent = CreateDefaultSubobject <UAudioComponent>(TEXT("micStartComponent"));
 	micStartComponent->bAutoActivate = false;
 
+	ConstructorHelpers::FObjectFinder<USoundCue> micStopSound(TEXT("'/Game/mic-stop.mic-stop'"));
+	micStopCue = micStopSound.Object;
+	micStopComponent = CreateDefaultSubobject <UAudioComponent>(TEXT("micStopComponent"));
+	micStopComponent->bAutoActivate = false;
+
 }
 
 void AAssistant::PostInitializeComponents()
@@ -77,6 +82,10 @@ void AAssistant::PostInitializeComponents()
 
 	if (micStartCue->IsValidLowLevelFast()) {
 		micStartComponent->SetSound(micStartCue);
+	}
+
+	if (micStopCue->IsValidLowLevelFast()) {
+		micStopComponent->SetSound(micStopCue);
 	}
 }
 
@@ -117,6 +126,7 @@ void AAssistant::OnMicrophoneStart()
 
 void AAssistant::OnMicrophoneStop()
 {
+	micStopComponent->Play();
 	UE_LOG(LogTemp, Warning, TEXT("Microphone Stopping..."));
 	UE_LOG(LogTemp, Warning, TEXT("2"));
 	MyMicrophone->StopRecording();
