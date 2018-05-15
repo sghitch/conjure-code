@@ -1,4 +1,7 @@
 #pragma once
+#include "AllowWindowsPlatformTypes.h"
+#include <windows.h>
+#include "HideWindowsPlatformTypes.h"
 
 #include <map>
 
@@ -11,6 +14,7 @@
 #include <iostream>
 #include <fstream>
 #include <time.h>
+
 #include "Assistant.generated.h"
 
 
