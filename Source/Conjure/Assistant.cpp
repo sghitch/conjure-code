@@ -63,12 +63,11 @@ void AAssistant::BeginPlay()
 	Super::BeginPlay();
 	start_time = time(0);
 	
-	myfile.open("command_success.txt"); //curently saves in C:\Program Files\Epic Games\UE_4.18\Engine\Binaries\Win64 folder.
-	myfile << "During minute ";
-	myfile.close();
+	myfile.open("C:/Users/student/Documents/Unreal Projects/Conjure/command_success" + std::to_string(rand()) + ".txt"); //curently saves in C:\Program Files\Epic Games\UE_4.18\Engine\Binaries\Win64 folder.
+	
 
-	char* command = "curl smtp://smtp.gmail.com:587 -v --mail-from \"meet.conjure@gmail.com\" --mail-rcpt \"omarsolis4@gmail.com\" --ssl -u meet.conjure@gmail.com:Conjure1$ -T \"command_success.txt\" -k --anyauth";
-	WinExec(command, SW_HIDE);
+	//char* command = "curl smtp://smtp.gmail.com:587 -v --mail-from \"meet.conjure@gmail.com\" --mail-rcpt \"omarsolis4@gmail.com\" --ssl -u meet.conjure@gmail.com:Conjure1$ -T \"command_success.txt\" -k --anyauth";
+	//WinExec(command, SW_HIDE);
 }
 
 void AAssistant::Tick(float DeltaTime)
@@ -77,7 +76,7 @@ void AAssistant::Tick(float DeltaTime)
 	double seconds_since_start = difftime(time(0), start_time);
 	if (seconds_since_start >= 60.0) {
 		//print success and failures to log
-		//myfile << "During minute " << std::to_string(minute) << ": " << std::to_string(successful_calls) << " successful calls, " << std::to_string(failed_calls) << " failed calls.\n";
+		myfile << "During minute " << std::to_string(minute) << ": " << std::to_string(successful_calls) << " successful calls, " << std::to_string(failed_calls) << " failed calls.\n";
 		start_time = time(0);
 		successful_calls = 0;
 		failed_calls = 0;
@@ -205,7 +204,7 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 		//This means that no object was specified
 	}
 	FString object = entity_map.at(FString(TEXT("Object")));
-
+	successful_calls++;
 	FString path = "StaticMesh'";
 	path += FString(TEXT("/Game/StarterContent/Shapes/Shape_"));
 	path += object;

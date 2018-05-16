@@ -113,14 +113,14 @@ AAsset * UGameController::CreateObject(FName pathName)
 
 FVector UGameController::getDefaultLocation()
 {
-	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
+	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));                                                                                                                                                     
 	float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
 	float z = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
 	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation().Vector() * 1000; //1000;
 	FVector actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() + actorForwardVectorMulDistance;
 	
 	//Set a default height that is above ground height
-	actorLocation.Y = 500.0f;
+	//actorLocation.Y = 50.0f;
 
 	return actorLocation;
 }
