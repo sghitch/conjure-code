@@ -90,6 +90,14 @@ void UGameController::ScaleSelectedRelative(FVector scale)
 	}
 }
 
+void UGameController::DeleteSelected()
+{
+	if (SelectedActor != nullptr)
+	{
+		SelectedActor->Destroy();
+	}
+}
+
 #pragma endregion Transform Relative
 
 AAsset * UGameController::CreateObject(FName pathName)
