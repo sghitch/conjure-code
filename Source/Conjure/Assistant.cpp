@@ -15,6 +15,8 @@ using namespace std::placeholders;
 
 std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>)>> functionMap;
 
+std::map<FString, TSharedPtr<FTextToSpeechSynthesizeResponse>> responseCache;
+
 AAssistant::AAssistant()
 {
 
@@ -96,7 +98,8 @@ void AAssistant::LatencyAudioResponse(FString message)
 	FTextToSpeechSynthesizeRequest SynthesisRequest;
 	SynthesisRequest.text = message;
 	FTextToSpeechSynthesizePendingRequest* T2sRequest = MyTextToSpeech->Synthesize(SynthesisRequest, "en-US_AllisonVoice");
-	T2sRequest->OnSuccess.BindUObject(this, &AAssistant::OnTextToSpeechSynthesize);
+	
+	T2sRequest->OnSuccess.BindUObject(this, &AAssistant::OnTextToSpeechSynthesize, SynthesisRequest.text);
 	T2sRequest->OnFailure.BindUObject(this, &AAssistant::OnTextToSpeechFailure);
 	T2sRequest->Send();
 }
@@ -224,7 +227,6 @@ void AAssistant::deleteSelected(TArray<FString> intent_arr, std::map<FString, FS
 	}
 	else {
 		successful_calls++;
-		LatencyAudioResponse("object deleted");
 		//RotationMode = false;
 		//ScalingMode = false;
 		//TranslationMode = false;
@@ -300,6 +302,9 @@ void AAssistant::OnConversationMessage(TSharedPtr<FConversationMessageResponse> 
 	FTextToSpeechSynthesizeRequest SynthesisRequest;
 	FString method = parseResponseMethod(Response->output.text.Last());
 	SynthesisRequest.text = parseResponseMessage(Response->output.text.Last());
+
+	
+	
 	TArray<FString> intentArr;
 	std::map<FString, FString> entityMap;
 	buildParams(intentArr, entityMap, Response);
@@ -312,13 +317,25 @@ void AAssistant::OnConversationMessage(TSharedPtr<FConversationMessageResponse> 
 		failed_calls++;
 	}
 
+	//check if text is in the map
+	//if its in the map than call play audio on that response
+	//don't do the rest
 
-	UE_LOG(LogTemp, Warning, TEXT("7"));
-	FTextToSpeechSynthesizePendingRequest* T2sRequest = MyTextToSpeech->Synthesize(SynthesisRequest, "en-US_AllisonVoice");
-	UE_LOG(LogTemp, Warning, TEXT("8"));
-	T2sRequest->OnSuccess.BindUObject(this, &AAssistant::OnTextToSpeechSynthesize);
-	T2sRequest->OnFailure.BindUObject(this, &AAssistant::OnTextToSpeechFailure);
-	T2sRequest->Send();
+
+	if (responseCache.find(SynthesisRequest.text) != responseCache.end()) {
+		MySpeaker->PlayAudio(responseCache[SynthesisRequest.text]->audioData, responseCache[SynthesisRequest.text]->audioLength);
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("7"));
+		FTextToSpeechSynthesizePendingRequest* T2sRequest = MyTextToSpeech->Synthesize(SynthesisRequest, "en-US_AllisonVoice");
+		UE_LOG(LogTemp, Warning, TEXT("8"));
+
+		T2sRequest->OnSuccess.BindUObject(this, &AAssistant::OnTextToSpeechSynthesize, SynthesisRequest.text);
+		T2sRequest->OnFailure.BindUObject(this, &AAssistant::OnTextToSpeechFailure);
+		T2sRequest->Send();
+	}
+
+
 }
 
 void AAssistant::OnConversationFailure(FString Error)
@@ -357,8 +374,12 @@ void AAssistant::OnSpeechToTextFailure(FString Error)
 	UE_LOG(LogTemp, Warning, TEXT("Speech To Text Error: %s"), *Error);
 }
 
-void AAssistant::OnTextToSpeechSynthesize(TSharedPtr<FTextToSpeechSynthesizeResponse> Response)
+void AAssistant::OnTextToSpeechSynthesize(TSharedPtr<FTextToSpeechSynthesizeResponse> Response, FString text)
 {
+	//init a text to Response map somewhere else.
+	                                                                          
+	//try to pass in the text here as well (maybe have last text as global if cant also could cause problems maybe), put text and response into map
+	responseCache[text] = Response;
 	MySpeaker->PlayAudio(Response->audioData, Response->audioLength);
 }
 

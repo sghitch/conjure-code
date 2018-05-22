@@ -1,0 +1,9 @@
+During minute 0: 4 successful calls, 2 failed calls.
+During minute 1: 1 successful calls, 2 failed calls.
+During minute 2: 2 successful calls, 3 failed calls.
+During minute 3: 0 successful calls, 0 failed calls.
+During minute 4: 0 successful calls, 0 failed calls.
+During minute 5: 0 successful calls, 0 failed calls.
+During minute 6: 0 successful calls, 0 failed calls.
+During minute 7: 0 successful calls, 0 failed calls.
+During minute 8: 0 successful calls, 0 failed calls.
