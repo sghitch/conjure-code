@@ -12,8 +12,6 @@
 
 #include "GameController.generated.h"
 
-
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CONJURE_API UGameController : public UActorComponent
 {
@@ -53,5 +51,8 @@ protected:
 
 private:
 	FVector getDefaultLocation();
-	FQuat calculateRelativeRotation(FVector rot);
+	FQuat calculateRelativeRotation(FRotator rot);
+	FVector getSnappedLocation(FVector pos);
+
+	float const SNAPPING_FACTOR = 50.0f;
 };

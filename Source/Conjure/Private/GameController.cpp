@@ -43,9 +43,7 @@ void UGameController::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 void UGameController::TranslateSelectedAbsolute(FVector pos)
 {
 	if (SelectedActor != nullptr) 
-	{
-		SelectedActor->SetActorLocation(pos);
-	}
+		SelectedActor->SetActorLocation(getSnappedLocation(pos));
 }
 
 #pragma endregion TransformAbsoulte
@@ -60,7 +58,7 @@ void UGameController::TranslateSelectedRelative(FVector pos)
 
 		oldpos += pos;
 
-		SelectedActor->SetActorLocation(oldpos);
+		SelectedActor->SetActorLocation(getSnappedLocation(oldpos));
 	}
 }
 
@@ -125,7 +123,7 @@ FVector UGameController::getDefaultLocation()
 	return actorLocation;
 }
 
-FQuat UGameController::calculateRelativeRotation(FVector rot)
+FQuat UGameController::calculateRelativeRotation(FRotator rot)
 {
 	if (SelectedActor == nullptr)
 		return FQuat::Identity;
@@ -141,12 +139,20 @@ FQuat UGameController::calculateRelativeRotation(FVector rot)
 	FVector objectRelativeUp = SelectedActor->GetTransform().TransformVectorNoScale(relativeUp);*/
 
 	//This is janky af, rewrite with sleep
-	FQuat roll = FQuat(relativeForward, FMath::DegreesToRadians(rot.Z));
-	FQuat pitch = FQuat(relativeRight, FMath::DegreesToRadians(rot.X));
-	FQuat yaw = FQuat(relativeUp, FMath::DegreesToRadians(rot.Y));
+	FQuat roll = FQuat(transformVector, FMath::DegreesToRadians(rot.Roll));
+	FQuat pitch = FQuat(relativeRight, FMath::DegreesToRadians(rot.Pitch));
+	FQuat yaw = FQuat(relativeUp, FMath::DegreesToRadians(rot.Yaw));
 
-	auto rotation = pitch * yaw * roll;
+	auto rotation = roll;
 	return rotation;
+}
+
+FVector UGameController::getSnappedLocation(FVector pos)
+{
+	return pos;
+	return FVector(FMath::RoundHalfFromZero(pos.X/SNAPPING_FACTOR) * SNAPPING_FACTOR, 
+		FMath::RoundHalfFromZero(pos.Y/SNAPPING_FACTOR) * SNAPPING_FACTOR, 
+		FMath::RoundHalfFromZero(pos.Z/SNAPPING_FACTOR) * SNAPPING_FACTOR);
 }
 
 
