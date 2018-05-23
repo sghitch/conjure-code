@@ -101,10 +101,12 @@ void AMyCharacter::Tick(float DeltaTime)
 			GetNormalizedDifference(oldPos, curPos) * TRANSLATION_FACTOR);
 	}
 
+	//This allows for enable deletion mode. would have a problem of being stuck on deletion mode because you cant select anything without deleting it
 	/*if (TriggerPressed && assistant->GetDeleteFlag()) {
 		assistant->GC->DeleteSelected();
 	}*/
 
+	//deletes only one object at a time
 	if (assistant->GetDeleteFlag()) {
 		assistant->GC->DeleteSelected();
 		assistant->SetDeleteFlag(false);

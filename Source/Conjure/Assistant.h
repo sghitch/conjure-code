@@ -105,7 +105,7 @@ protected:
 
 	// TextToSpeech
 	UPROPERTY() UTextToSpeech* MyTextToSpeech;
-	void OnTextToSpeechSynthesize(TSharedPtr<FTextToSpeechSynthesizeResponse> Response);
+	void OnTextToSpeechSynthesize(TSharedPtr<FTextToSpeechSynthesizeResponse> Response, FString text);
 	void OnTextToSpeechFailure(FString Error);
 
 	// SpeechToText
