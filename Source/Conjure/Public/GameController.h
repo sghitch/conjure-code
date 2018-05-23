@@ -53,4 +53,5 @@ protected:
 
 private:
 	FVector getDefaultLocation();
+	FQuat calculateRelativeRotation(FVector rot);
 };

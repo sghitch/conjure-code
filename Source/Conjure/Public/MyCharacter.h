@@ -36,6 +36,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void CallMicrophone();
 	void StopMicrophone();
+	void SetTriggerFlagTrue();
+	void SetTriggerFlagFalse();
+	bool TriggerPressed;
+
+	FVector GetNormalizedDifference(FVector oldPos, FVector newPos);
+	
 	AAssistant* assistant = nullptr;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -45,6 +51,19 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "GameController")
 	void SetSelectedActor(AActor* selectedActor);
+
+	FVector GetLeftHandPos();
+	FVector GetRightHandPos();
+
+	//Scaling factors
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TransformFactors")
+	FVector TRANSLATION_FACTOR = FVector(10.0f, 10.0f, 10.0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TransformFactors")
+	FVector SCALING_FACTOR = FVector(10.0f, 10.0f, 10.0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TransformFactors")
+	FVector ROTATION_FACTOR = FVector(10.0f, 10.0f, 10.0f);
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
@@ -63,4 +82,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 		class UMotionControllerComponent* RightHandComponent;
+
+	FVector oldScale;
+	FVector oldPos;
+	FRotator oldRot;
 };
