@@ -1,7 +1,4 @@
 #pragma once
-#include "AllowWindowsPlatformTypes.h"
-#include <windows.h>
-#include "HideWindowsPlatformTypes.h"
 
 #include <map>
 
@@ -13,10 +10,6 @@
 #include "GameController.h"
 #include "GameFramework/Pawn.h"
 #include "Watson.h"
-#include <iostream>
-#include <fstream>
-#include <time.h>
-
 #include "Assistant.generated.h"
 
 
@@ -42,15 +35,10 @@ public:
 	bool GetTranslateFlag();
 	bool GetScaleFlag();
 	bool GetRotateFlag();
-	bool GetDeleteFlag();
-	void SetDeleteFlag(bool deleteFlag);
 
 	//GC
 	UPROPERTY() UGameController* GC;
 
-<<<<<<< HEAD
-	std::ofstream myfile;
-=======
 	//Latency Feedback
 	UPROPERTY(BlueprintReadOnly, Category = "Audio")
 		USoundCue * micStartCue;
@@ -66,7 +54,6 @@ public:
 
 	void InitializeSound();
 	void PostInitializeComponents();
->>>>>>> master
 
 protected:
 	// Speaker
@@ -79,7 +66,6 @@ protected:
 	bool TranslationMode; //TODO: eventually make these enums
 	bool ScalingMode;
 	bool RotationMode;
-	bool DeleteMode;
 	
 	//MyCharacter
 	void SetupMyCharacter();
@@ -90,8 +76,6 @@ protected:
 	void clearEditingFlags();
 	void createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
-	void enableDelete(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
-	void deleteSelected(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	// Watson
 	UPROPERTY() UWatson* MyWatson;
 
@@ -151,9 +135,4 @@ protected:
 
 	//Test Functions
 	void TestSpawn();
-
-	time_t start_time = time(0);
-	int successful_calls = 0;
-	int failed_calls = 0;
-	int minute = 0;
 };
