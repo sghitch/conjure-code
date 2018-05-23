@@ -58,9 +58,7 @@ void UGameController::TranslateSelectedRelative(FVector pos)
 	{
 		auto oldpos = SelectedActor->GetActorLocation();
 
-		oldpos.X += pos.X;
-		oldpos.Y += pos.Y;
-		oldpos.Z += pos.Z;
+		oldpos += pos;
 
 		SelectedActor->SetActorLocation(oldpos);
 	}
@@ -71,7 +69,7 @@ void UGameController::RotateSelectedRelative(FVector rot)
 	if (SelectedActor != nullptr)
 	{
 		auto oldrot = SelectedActor->GetActorRotation();
-
+	
 		oldrot.Pitch += rot.X;
 		oldrot.Yaw += rot.Y;
 		oldrot.Roll += rot.Z;
@@ -84,7 +82,11 @@ void UGameController::ScaleSelectedRelative(FVector scale)
 {
 	if (SelectedActor != nullptr)
 	{
-		SelectedActor->SetActorScale3D(scale);
+		auto oldScale = SelectedActor->GetActorScale3D();
+		oldScale += scale;
+		oldScale = oldScale.GetAbs();
+
+		SelectedActor->SetActorScale3D(oldScale);
 	}
 }
 
@@ -114,10 +116,38 @@ FVector UGameController::getDefaultLocation()
 	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
 	float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
 	float z = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));
-	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation().Vector() * 1000;
+	FVector actorForwardVectorMulDistance = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation().Vector() * 1000; //1000;
 	FVector actorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() + actorForwardVectorMulDistance;
+	
+	//Set a default height that is above ground height
+	actorLocation.Y = 500.0f;
 
 	return actorLocation;
 }
+
+FQuat UGameController::calculateRelativeRotation(FVector rot)
+{
+	if (SelectedActor == nullptr)
+		return FQuat::Identity;
+
+	auto cameraManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
+	auto transformVector = SelectedActor->GetActorLocation() - cameraManager->GetCameraLocation();
+	FVector relativeUp = cameraManager->GetActorUpVector();
+	FVector relativeRight = cameraManager->GetActorRightVector();
+	FVector relativeForward = cameraManager->GetActorForwardVector();
+
+	/*FVector objectRelativeForward = SelectedActor->GetTransform().TransformVectorNoScale(relativeForward);
+	FVector objectRelativeRight = SelectedActor->GetTransform().TransformVectorNoScale(relativeRight);
+	FVector objectRelativeUp = SelectedActor->GetTransform().TransformVectorNoScale(relativeUp);*/
+
+	//This is janky af, rewrite with sleep
+	FQuat roll = FQuat(relativeForward, FMath::DegreesToRadians(rot.Z));
+	FQuat pitch = FQuat(relativeRight, FMath::DegreesToRadians(rot.X));
+	FQuat yaw = FQuat(relativeUp, FMath::DegreesToRadians(rot.Y));
+
+	auto rotation = pitch * yaw * roll;
+	return rotation;
+}
+
 
 #pragma endregion Private Methods
