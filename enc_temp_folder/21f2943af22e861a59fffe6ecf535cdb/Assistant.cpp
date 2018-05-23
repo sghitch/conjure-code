@@ -5,7 +5,6 @@
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
 #include "Asset.h"
-#include <string>
 #include <iostream>
 #include <map>
 #include <functional>
@@ -70,11 +69,6 @@ void AAssistant::InitializeSound()
 	micStartComponent = CreateDefaultSubobject <UAudioComponent>(TEXT("micStartComponent"));
 	micStartComponent->bAutoActivate = false;
 
-	ConstructorHelpers::FObjectFinder<USoundCue> micStopSound(TEXT("'/Game/mic-stop.mic-stop'"));
-	micStopCue = micStopSound.Object;
-	micStopComponent = CreateDefaultSubobject <UAudioComponent>(TEXT("micStopComponent"));
-	micStopComponent->bAutoActivate = false;
-
 }
 
 void AAssistant::PostInitializeComponents()
@@ -84,38 +78,16 @@ void AAssistant::PostInitializeComponents()
 	if (micStartCue->IsValidLowLevelFast()) {
 		micStartComponent->SetSound(micStartCue);
 	}
-
-	if (micStopCue->IsValidLowLevelFast()) {
-		micStopComponent->SetSound(micStopCue);
-	}
 }
 
 void AAssistant::BeginPlay()
 {
 	Super::BeginPlay();
-	start_time = time(0);
-	
-	myfile.open("C:/Users/student/Documents/Unreal Projects/Conjure/command_success" + std::to_string(rand()) + ".txt"); //curently saves in C:\Program Files\Epic Games\UE_4.18\Engine\Binaries\Win64 folder.
-	
-
-	//char* command = "curl smtp://smtp.gmail.com:587 -v --mail-from \"meet.conjure@gmail.com\" --mail-rcpt \"omarsolis4@gmail.com\" --ssl -u meet.conjure@gmail.com:Conjure1$ -T \"command_success.txt\" -k --anyauth";
-	//WinExec(command, SW_HIDE);
 }
 
 void AAssistant::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	double seconds_since_start = difftime(time(0), start_time);
-	if (seconds_since_start >= 60.0) {
-		//print success and failures to log
-		myfile << "During minute " << std::to_string(minute) << ": " << std::to_string(successful_calls) << " successful calls, " << std::to_string(failed_calls) << " failed calls.\n";
-		start_time = time(0);
-		successful_calls = 0;
-		failed_calls = 0;
-		minute++;
-		//char* command = "curl smtp://smtp.gmail.com:587 -v --mail-from \"meet.conjure@gmail.com\" --mail-rcpt \"omarsolis4@gmail.com\" --ssl -u meet.conjure@gmail.com:Conjure1$ -T \"command_success.txt\" -k --anyauth";
-		//WinExec(command, SW_HIDE);
-	}
 }
 
 /*
@@ -145,7 +117,6 @@ void AAssistant::OnMicrophoneStart()
 
 void AAssistant::OnMicrophoneStop()
 {
-	micStopComponent->Play();
 	UE_LOG(LogTemp, Warning, TEXT("Microphone Stopping..."));
 	UE_LOG(LogTemp, Warning, TEXT("2"));
 	MyMicrophone->StopRecording();
@@ -180,10 +151,8 @@ bool AAssistant::GetTranslateFlag()
 void AAssistant::enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
 	if (GC->SelectedActor == nullptr) {
 		LatencyAudioResponse("No object selected"); 
-		failed_calls++;
 	}
 	else {
-		successful_calls++;
 		LatencyAudioResponse("object selected");
 		RotationMode = true;
 		ScalingMode = false;
@@ -195,10 +164,8 @@ void AAssistant::enableRotation(TArray<FString> intent_arr, std::map<FString, FS
 void AAssistant::enableTranslation(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
 	if (GC->SelectedActor == nullptr) {
 		LatencyAudioResponse("No object selected");
-		failed_calls++;
 	}
 	else {
-		successful_calls++;
 		LatencyAudioResponse("object selected");
 		RotationMode = false;
 		ScalingMode = false;
@@ -211,10 +178,8 @@ void AAssistant::enableTranslation(TArray<FString> intent_arr, std::map<FString,
 void AAssistant::enableScaling(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
 	if (GC->SelectedActor == nullptr) {
 		LatencyAudioResponse("No object selected");
-		failed_calls++;
 	}
 	else {
-		successful_calls++;
 		LatencyAudioResponse("object selected");
 		RotationMode = false;
 		ScalingMode = true;
@@ -238,7 +203,7 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 		//This means that no object was specified
 	}
 	FString object = entity_map.at(FString(TEXT("Object")));
-	successful_calls++;
+
 	FString path = "StaticMesh'";
 	path += FString(TEXT("/Game/StarterContent/Shapes/Shape_"));
 	path += object;
@@ -299,7 +264,6 @@ void AAssistant::OnConversationMessage(TSharedPtr<FConversationMessageResponse> 
 	}
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("Function: %s does not exist"), *method);
-		failed_calls++;
 	}
 
 
@@ -355,7 +319,6 @@ void AAssistant::OnTextToSpeechSynthesize(TSharedPtr<FTextToSpeechSynthesizeResp
 void AAssistant::OnTextToSpeechFailure(FString Error)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Text To Speech Error: %s"), *Error);
-	failed_calls++;
 }
 
 void AAssistant::TestSpawn()
