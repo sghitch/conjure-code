@@ -1,0 +1,2 @@
+During minute 0: 1 successful calls, 0 failed calls.
+During minute 1: 2 successful calls, 2 failed calls.

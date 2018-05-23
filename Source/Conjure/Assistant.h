@@ -42,6 +42,8 @@ public:
 	bool GetTranslateFlag();
 	bool GetScaleFlag();
 	bool GetRotateFlag();
+	bool GetDeleteFlag();
+	void SetDeleteFlag(bool deleteFlag);
 
 	//GC
 	UPROPERTY() UGameController* GC;
@@ -77,6 +79,7 @@ protected:
 	bool TranslationMode; //TODO: eventually make these enums
 	bool ScalingMode;
 	bool RotationMode;
+	bool DeleteMode;
 	
 	//MyCharacter
 	void SetupMyCharacter();
@@ -87,6 +90,8 @@ protected:
 	void clearEditingFlags();
 	void createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
+	void enableDelete(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
+	void deleteSelected(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	// Watson
 	UPROPERTY() UWatson* MyWatson;
 

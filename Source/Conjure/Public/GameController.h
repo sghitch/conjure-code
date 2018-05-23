@@ -32,6 +32,7 @@ public:
 	void TranslateSelectedRelative(FVector pos);
 	void RotateSelectedRelative(FVector rot);
 	void ScaleSelectedRelative(FVector scale);
+	void DeleteSelected();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameController)
 	AActor* SelectedActor = nullptr;
