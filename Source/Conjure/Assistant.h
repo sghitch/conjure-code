@@ -48,9 +48,8 @@ public:
 	//GC
 	UPROPERTY() UGameController* GC;
 
-<<<<<<< HEAD
 	std::ofstream myfile;
-=======
+
 	//Latency Feedback
 	UPROPERTY(BlueprintReadOnly, Category = "Audio")
 		USoundCue * micStartCue;
@@ -66,7 +65,7 @@ public:
 
 	void InitializeSound();
 	void PostInitializeComponents();
->>>>>>> master
+
 
 protected:
 	// Speaker
