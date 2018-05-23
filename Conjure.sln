@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{EE5B612B-4596-4547-9C18-98EDCB727EF6}"
 EndProject
@@ -60,10 +60,11 @@ Global
 		{3735E527-681E-478C-B395-285775463259}.Shipping|Win32.Build.0 = BuiltWithUnrealBuildTool|Win32
 		{3735E527-681E-478C-B395-285775463259}.Shipping|Win64.ActiveCfg = BuiltWithUnrealBuildTool|Win32
 		{3735E527-681E-478C-B395-285775463259}.Shipping|Win64.Build.0 = BuiltWithUnrealBuildTool|Win32
-		{F56EA384-2DD9-40B9-BACD-852479F07ACD}.DebugGame Editor|HTML5.ActiveCfg = HTML5_DebugGame_Editor|Win32
+		{F56EA384-2DD9-40B9-BACD-852479F07ACD}.DebugGame Editor|HTML5.ActiveCfg = DebugGame_Editor|Win32
+		{F56EA384-2DD9-40B9-BACD-852479F07ACD}.DebugGame Editor|HTML5.Build.0 = DebugGame_Editor|Win32
 		{F56EA384-2DD9-40B9-BACD-852479F07ACD}.DebugGame Editor|Win32.ActiveCfg = DebugGame_Editor|Win32
-		{F56EA384-2DD9-40B9-BACD-852479F07ACD}.DebugGame Editor|Win64.ActiveCfg = DebugGame_Editor|x64
-		{F56EA384-2DD9-40B9-BACD-852479F07ACD}.DebugGame Editor|Win64.Build.0 = DebugGame_Editor|x64
+		{F56EA384-2DD9-40B9-BACD-852479F07ACD}.DebugGame Editor|Win64.ActiveCfg = Development_Editor|x64
+		{F56EA384-2DD9-40B9-BACD-852479F07ACD}.DebugGame Editor|Win64.Build.0 = Development_Editor|x64
 		{F56EA384-2DD9-40B9-BACD-852479F07ACD}.DebugGame|HTML5.ActiveCfg = HTML5_DebugGame_Game|Win32
 		{F56EA384-2DD9-40B9-BACD-852479F07ACD}.DebugGame|HTML5.Build.0 = HTML5_DebugGame_Game|Win32
 		{F56EA384-2DD9-40B9-BACD-852479F07ACD}.DebugGame|Win32.ActiveCfg = DebugGame_Game|Win32
@@ -93,5 +94,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3735E527-681E-478C-B395-285775463259} = {EE5B612B-4596-4547-9C18-98EDCB727EF6}
 		{F56EA384-2DD9-40B9-BACD-852479F07ACD} = {A4E2A2C5-189F-4EB8-9ADF-2A421EC74443}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3A934DD5-5624-49FB-B482-996698192318}
 	EndGlobalSection
 EndGlobal
