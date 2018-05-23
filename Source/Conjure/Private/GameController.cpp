@@ -102,7 +102,7 @@ void UGameController::DeleteSelected()
 
 AAsset * UGameController::CreateObject(FName pathName)
 {
-	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), getDefaultLocation(), FRotator::ZeroRotator);
+	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), getControllerBasedLocation(), FRotator::ZeroRotator);
 	auto obj = LoadObjFromPath<UStaticMesh>(pathName);
 	TArray<UStaticMeshComponent*> Components;
 	spawnedActor->GetComponents<UStaticMeshComponent>(Components);
@@ -115,10 +115,42 @@ AAsset * UGameController::CreateObject(FName pathName)
 	return spawnedActor;
 }
 
+/* For use in the GetControllerBasedLocation method, as MyCharacter and Assistant classes are allowed
+to alter GC, but GC cannot call methods from MC or Assistant (circularity)*/
+void UGameController:: SetRHLocation(FVector pos, FRotator rot)
+{
+	RHPos = pos;
+	RHRot = rot;
+}
+
 #pragma endregion Public Methods
 
 #pragma region Private Methods
 
+/*Location Option B for spawning new objects in the world: place them at fixed distance from User,
+in the vector direction their laser controller points in. 
+TODO: if another object already present, spawn in a slightly different place? Outside other object's bounds?*/
+FVector UGameController::getControllerBasedLocation()
+{
+	//float default_z_distance = 50.0;
+
+	float x = RHPos.X + RHRot.Yaw;
+	float z = RHPos.Z;
+	float y = RHPos.Y + RHRot.Pitch;
+
+	if (y < 50.0)
+		y = 50.0;
+
+	FVector actorLocation;
+	actorLocation.X = x;
+	actorLocation.Y = y;
+	actorLocation.Z = z;
+	return actorLocation;
+}
+
+/* Location Option A for spawning new objects in the world: random location that helps avoid spawning
+multiple objects in the same place, but tends to sometimes put them below the ground or in 
+unpredictable places. */
 FVector UGameController::getDefaultLocation()
 {
 	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));                                                                                                                                                     

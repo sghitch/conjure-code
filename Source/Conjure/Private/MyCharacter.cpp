@@ -83,6 +83,8 @@ void AMyCharacter::Tick(float DeltaTime)
 
 	FVector curPos = RightHandComponent->GetComponentLocation();
 	FRotator curRot = RightHandComponent->GetComponentRotation();
+
+	assistant->GC->SetRHLocation(curPos, curRot);
 	
 	if (TriggerPressed && assistant->GetRotateFlag()) {
 		FVector oldRotVec = FVector(oldRot.Pitch, oldRot.Yaw, oldRot.Roll);
