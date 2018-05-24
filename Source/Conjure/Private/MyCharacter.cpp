@@ -84,7 +84,7 @@ void AMyCharacter::Tick(float DeltaTime)
 	FVector curPos = RightHandComponent->GetComponentLocation();
 	FRotator curRot = RightHandComponent->GetComponentRotation();
 
-	assistant->GC->SetRHLocation(curPos, curRot);
+	//assistant->GC->SetRHLocation(curPos, curRot);
 	
 	if (TriggerPressed && assistant->GetRotateFlag()) {
 		FVector oldRotVec = FVector(oldRot.Pitch, oldRot.Yaw, oldRot.Roll);
@@ -175,6 +175,14 @@ void AMyCharacter::SetSelectedActor(AActor* selectedActor)
 	if (assistant != nullptr)
 	{
 		assistant->GC->SelectedActor = selectedActor;
+	}
+}
+
+void AMyCharacter::SetRHLocation(FVector location)
+{
+	if (assistant != nullptr)
+	{
+		assistant->GC->RHPos = location;
 	}
 }
 

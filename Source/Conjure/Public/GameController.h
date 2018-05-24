@@ -39,7 +39,7 @@ public:
 
 	AAsset* CreateObject(FName pathName);
 
-	void SetRHLocation(FVector pos, FRotator rot);
+	FVector RHPos;
 
 protected:
 	// Called when the game starts
@@ -58,7 +58,4 @@ private:
 	FVector getControllerBasedLocation();
 	FVector getDefaultLocation();
 	FQuat calculateRelativeRotation(FVector rot);
-
-	FVector RHPos;
-	FRotator RHRot;
 };
