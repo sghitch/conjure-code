@@ -2,11 +2,13 @@
 #include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 #include "Asset.h"
+#include <string>
 #include <iostream>
 #include <map>
 #include <functional>
-#include "MyCharacter.h"
 #include "EngineUtils.h"
 
 #define VR //Indicates presence of VR equipment for testing
@@ -14,6 +16,8 @@
 using namespace std::placeholders;
 
 std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>)>> functionMap;
+
+std::map<FString, TSharedPtr<FTextToSpeechSynthesizeResponse>> responseCache;
 
 AAssistant::AAssistant()
 {
@@ -41,6 +45,16 @@ AAssistant::AAssistant()
 void AAssistant::initialize() {
 	functionMap[FString(TEXT("createObject"))] = std::bind(&AAssistant::createObject, this, _1, _2);
 	functionMap[FString(TEXT("enableRotation"))] = std::bind(&AAssistant::enableRotation, this, _1, _2);
+	functionMap[FString(TEXT("enableTranslation"))] = std::bind(&AAssistant::enableTranslation, this, _1, _2);
+	functionMap[FString(TEXT("enableScaling"))] = std::bind(&AAssistant::enableScaling, this, _1, _2);
+	functionMap[FString(TEXT("enableDelete"))] = std::bind(&AAssistant::enableDelete, this, _1, _2);
+	functionMap[FString(TEXT("deleteSelected"))] = std::bind(&AAssistant::deleteSelected, this, _1, _2);
+	RotationMode = false;
+	ScalingMode = false;
+	TranslationMode = false;
+
+	DeleteMode = false;
+	InitializeSound();
 }
 
 void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
@@ -53,14 +67,58 @@ void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
 	InputComponent->BindAction("SpawnTest", IE_Pressed, this, &AAssistant::TestSpawn);
 }
 
+
+void AAssistant::InitializeSound()
+{
+	ConstructorHelpers::FObjectFinder<USoundCue> micStartSound(TEXT("'/Game/mic-start.mic-start'"));
+	micStartCue = micStartSound.Object;
+	micStartComponent = CreateDefaultSubobject <UAudioComponent>(TEXT("micStartComponent"));
+	micStartComponent->bAutoActivate = false;
+
+	ConstructorHelpers::FObjectFinder<USoundCue> micStopSound(TEXT("'/Game/mic-stop.mic-stop'"));
+	micStopCue = micStopSound.Object;
+	micStopComponent = CreateDefaultSubobject <UAudioComponent>(TEXT("micStopComponent"));
+	micStopComponent->bAutoActivate = false;
+
+}
+
+void AAssistant::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (micStartCue->IsValidLowLevelFast()) {
+		micStartComponent->SetSound(micStartCue);
+	}
+
+	if (micStopCue->IsValidLowLevelFast()) {
+		micStopComponent->SetSound(micStopCue);
+	}
+}
+
 void AAssistant::BeginPlay()
 {
 	Super::BeginPlay();
+	start_time = time(0);
+	
+	myfile.open("C:/Users/student/Documents/Unreal Projects/Conjure/command_success" + std::to_string(rand()) + ".txt"); //default saves in C:\Program Files\Epic Games\UE_4.18\Engine\Binaries\Win64 folder.
+	
+
+	
 }
 
 void AAssistant::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	double seconds_since_start = difftime(time(0), start_time);
+	if (seconds_since_start >= 60.0) {
+		//print success and failures to log
+		myfile << "During minute " << std::to_string(minute) << ": " << std::to_string(successful_calls) << " successful calls, " << std::to_string(failed_calls) << " failed calls.\n";
+		start_time = time(0);
+		successful_calls = 0;
+		failed_calls = 0;
+		minute++;
+		
+	}
 }
 
 /*
@@ -72,13 +130,15 @@ void AAssistant::LatencyAudioResponse(FString message)
 	FTextToSpeechSynthesizeRequest SynthesisRequest;
 	SynthesisRequest.text = message;
 	FTextToSpeechSynthesizePendingRequest* T2sRequest = MyTextToSpeech->Synthesize(SynthesisRequest, "en-US_AllisonVoice");
-	T2sRequest->OnSuccess.BindUObject(this, &AAssistant::OnTextToSpeechSynthesize);
+	
+	T2sRequest->OnSuccess.BindUObject(this, &AAssistant::OnTextToSpeechSynthesize, SynthesisRequest.text);
 	T2sRequest->OnFailure.BindUObject(this, &AAssistant::OnTextToSpeechFailure);
 	T2sRequest->Send();
 }
 
 void AAssistant::OnMicrophoneStart()
 {
+	micStartComponent->Play();
 	UE_LOG(LogTemp, Warning, TEXT("Microphone Starting..."));
 	std::cout << "Print test" << std::endl;
 	//TODO: this would be a good place to play sound and signal that the assistant is listening
@@ -89,6 +149,7 @@ void AAssistant::OnMicrophoneStart()
 
 void AAssistant::OnMicrophoneStop()
 {
+	micStopComponent->Play();
 	UE_LOG(LogTemp, Warning, TEXT("Microphone Stopping..."));
 	UE_LOG(LogTemp, Warning, TEXT("2"));
 	MyMicrophone->StopRecording();
@@ -105,23 +166,125 @@ void AAssistant::OnMicrophoneStop()
 	}
 }
 
+bool AAssistant::GetRotateFlag()
+{
+	return RotationMode;
+}
+
+bool AAssistant::GetScaleFlag()
+{
+	return ScalingMode;
+}
+
+bool AAssistant::GetTranslateFlag()
+{
+	return TranslationMode;
+}
+
+bool AAssistant::GetDeleteFlag()
+{
+	return DeleteMode;
+}
+
+void AAssistant::SetDeleteFlag(bool deleteFlag)
+{
+	DeleteMode = deleteFlag;
+}
+
 void AAssistant::enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
 	if (GC->SelectedActor == nullptr) {
 		LatencyAudioResponse("No object selected"); 
+		failed_calls++;
 	}
 	else {
+		successful_calls++;
 		LatencyAudioResponse("object selected");
+		RotationMode = true;
+		ScalingMode = false;
+		TranslationMode = false;
+		DeleteMode = false;
 	}
 
 }
 
+void AAssistant::enableTranslation(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
+	if (GC->SelectedActor == nullptr) {
+		LatencyAudioResponse("No object selected");
+		failed_calls++;
+	}
+	else {
+		successful_calls++;
+		LatencyAudioResponse("object selected");
+		RotationMode = false;
+		ScalingMode = false;
+		TranslationMode = true;
+		DeleteMode = false;
+	}
+
+}
+
+void AAssistant::enableScaling(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
+	if (GC->SelectedActor == nullptr) {
+		LatencyAudioResponse("No object selected");
+		failed_calls++;
+	}
+	else {
+		successful_calls++;
+		LatencyAudioResponse("object selected");
+		RotationMode = false;
+		ScalingMode = true;
+		TranslationMode = false;
+		DeleteMode = false;
+	}
+
+}
+
+void AAssistant::enableDelete(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
+	if (GC->SelectedActor == nullptr) {
+		LatencyAudioResponse("No object selected");
+		failed_calls++;
+	}
+	else {
+		successful_calls++;
+		LatencyAudioResponse("object selected");
+		RotationMode = false;
+		ScalingMode = false;
+		TranslationMode = false;
+		DeleteMode = true;
+	}
+}
+
+void AAssistant::deleteSelected(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
+	if (GC->SelectedActor == nullptr) {
+		LatencyAudioResponse("No object selected");
+		failed_calls++;
+	}
+	else {
+		successful_calls++;
+		//RotationMode = false;
+		//ScalingMode = false;
+		//TranslationMode = false;
+		DeleteMode = true;
+	}
+}
+
+void AAssistant::clearEditingFlags()
+{
+	RotationMode = false;
+	ScalingMode = false;
+	TranslationMode = false;
+	DeleteMode = false;
+}
+
 void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
 	
+	clearEditingFlags();
+
 	if (entity_map.find(FString(TEXT("Object"))) == entity_map.end()) {
 		//This means that no object was specified
 	}
 	FString object = entity_map.at(FString(TEXT("Object")));
-
+	successful_calls++;
 	FString path = "StaticMesh'";
 	path += FString(TEXT("/Game/StarterContent/Shapes/Shape_"));
 	path += object;
@@ -173,6 +336,9 @@ void AAssistant::OnConversationMessage(TSharedPtr<FConversationMessageResponse> 
 	FTextToSpeechSynthesizeRequest SynthesisRequest;
 	FString method = parseResponseMethod(Response->output.text.Last());
 	SynthesisRequest.text = parseResponseMessage(Response->output.text.Last());
+
+	
+	
 	TArray<FString> intentArr;
 	std::map<FString, FString> entityMap;
 	buildParams(intentArr, entityMap, Response);
@@ -182,15 +348,28 @@ void AAssistant::OnConversationMessage(TSharedPtr<FConversationMessageResponse> 
 	}
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("Function: %s does not exist"), *method);
+		failed_calls++;
+	}
+
+	//check if text is in the map
+	//if its in the map than call play audio on that response
+	//don't do the rest
+
+
+	if (responseCache.find(SynthesisRequest.text) != responseCache.end()) {
+		MySpeaker->PlayAudio(responseCache[SynthesisRequest.text]->audioData, responseCache[SynthesisRequest.text]->audioLength);
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("7"));
+		FTextToSpeechSynthesizePendingRequest* T2sRequest = MyTextToSpeech->Synthesize(SynthesisRequest, "en-US_AllisonVoice");
+		UE_LOG(LogTemp, Warning, TEXT("8"));
+
+		T2sRequest->OnSuccess.BindUObject(this, &AAssistant::OnTextToSpeechSynthesize, SynthesisRequest.text);
+		T2sRequest->OnFailure.BindUObject(this, &AAssistant::OnTextToSpeechFailure);
+		T2sRequest->Send();
 	}
 
 
-	UE_LOG(LogTemp, Warning, TEXT("7"));
-	FTextToSpeechSynthesizePendingRequest* T2sRequest = MyTextToSpeech->Synthesize(SynthesisRequest, "en-US_AllisonVoice");
-	UE_LOG(LogTemp, Warning, TEXT("8"));
-	T2sRequest->OnSuccess.BindUObject(this, &AAssistant::OnTextToSpeechSynthesize);
-	T2sRequest->OnFailure.BindUObject(this, &AAssistant::OnTextToSpeechFailure);
-	T2sRequest->Send();
 }
 
 void AAssistant::OnConversationFailure(FString Error)
@@ -229,14 +408,19 @@ void AAssistant::OnSpeechToTextFailure(FString Error)
 	UE_LOG(LogTemp, Warning, TEXT("Speech To Text Error: %s"), *Error);
 }
 
-void AAssistant::OnTextToSpeechSynthesize(TSharedPtr<FTextToSpeechSynthesizeResponse> Response)
+void AAssistant::OnTextToSpeechSynthesize(TSharedPtr<FTextToSpeechSynthesizeResponse> Response, FString text)
 {
+	//init a text to Response map somewhere else.
+	                                                                          
+	//try to pass in the text here as well (maybe have last text as global if cant also could cause problems maybe), put text and response into map
+	responseCache[text] = Response;
 	MySpeaker->PlayAudio(Response->audioData, Response->audioLength);
 }
 
 void AAssistant::OnTextToSpeechFailure(FString Error)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Text To Speech Error: %s"), *Error);
+	failed_calls++;
 }
 
 void AAssistant::TestSpawn()

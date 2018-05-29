@@ -1,13 +1,22 @@
 #pragma once
+#include "AllowWindowsPlatformTypes.h"
+#include <windows.h>
+#include "HideWindowsPlatformTypes.h"
 
 #include <map>
 
 #include "Common/Microphone.h"
 #include "Common/Speaker.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 #include "CoreMinimal.h"
 #include "GameController.h"
 #include "GameFramework/Pawn.h"
 #include "Watson.h"
+#include <iostream>
+#include <fstream>
+#include <time.h>
+
 #include "Assistant.generated.h"
 
 
@@ -29,8 +38,34 @@ public:
 	void OnMicrophoneStart();
 	void OnMicrophoneStop();
 
+	//Called by MyCharacter
+	bool GetTranslateFlag();
+	bool GetScaleFlag();
+	bool GetRotateFlag();
+	bool GetDeleteFlag();
+	void SetDeleteFlag(bool deleteFlag);
+
 	//GC
 	UPROPERTY() UGameController* GC;
+
+	std::ofstream myfile;
+
+	//Latency Feedback
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		USoundCue * micStartCue;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		USoundCue *micStopCue;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		UAudioComponent *micStartComponent;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		UAudioComponent *micStopComponent;
+
+	void InitializeSound();
+	void PostInitializeComponents();
+
 
 protected:
 	// Speaker
@@ -39,11 +74,23 @@ protected:
 	// Microphone
 	UPROPERTY() UMicrophone* MyMicrophone;
 	
+	//Info needed by MyCharacter
+	bool TranslationMode; //TODO: eventually make these enums
+	bool ScalingMode;
+	bool RotationMode;
+	bool DeleteMode;
 	
+	//MyCharacter
+	void SetupMyCharacter();
 
 	// world modification methods
+	void enableTranslation(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
+	void enableScaling(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
+	void clearEditingFlags();
 	void createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
+	void enableDelete(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
+	void deleteSelected(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	// Watson
 	UPROPERTY() UWatson* MyWatson;
 
@@ -58,7 +105,7 @@ protected:
 
 	// TextToSpeech
 	UPROPERTY() UTextToSpeech* MyTextToSpeech;
-	void OnTextToSpeechSynthesize(TSharedPtr<FTextToSpeechSynthesizeResponse> Response);
+	void OnTextToSpeechSynthesize(TSharedPtr<FTextToSpeechSynthesizeResponse> Response, FString text);
 	void OnTextToSpeechFailure(FString Error);
 
 	// SpeechToText
@@ -103,4 +150,9 @@ protected:
 
 	//Test Functions
 	void TestSpawn();
+
+	time_t start_time = time(0);
+	int successful_calls = 0;
+	int failed_calls = 0;
+	int minute = 0;
 };
