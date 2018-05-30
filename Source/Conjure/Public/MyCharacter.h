@@ -67,6 +67,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "GameController")
 		void SetRHLocation(FVector location);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LaserBoolean")
+	bool TranslateOn;
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
