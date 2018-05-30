@@ -83,7 +83,7 @@ void AMyCharacter::Tick(float DeltaTime)
 
 	FVector curPos = RightHandComponent->GetComponentLocation();
 	FRotator curRot = RightHandComponent->GetComponentRotation();
-	
+	TranslateOn = false;
 	if (TriggerPressed && assistant->GetRotateFlag()) {
 		FVector oldRotVec = FVector(oldRot.Pitch, oldRot.Yaw, oldRot.Roll);
 		FVector curRotVec = FVector(curRot.Pitch, curRot.Yaw, curRot.Roll);
@@ -97,6 +97,7 @@ void AMyCharacter::Tick(float DeltaTime)
 	}
 
 	if (TriggerPressed && assistant->GetTranslateFlag()) {
+		TranslateOn = true;
 		assistant->GC->TranslateSelectedRelative(
 			GetNormalizedDifference(oldPos, curPos) * TRANSLATION_FACTOR);
 	}
