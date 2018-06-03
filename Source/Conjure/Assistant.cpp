@@ -286,14 +286,37 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 	FString object = entity_map.at(FString(TEXT("Object")));
 	successful_calls++;
 	FString path = "StaticMesh'";
-	path += FString(TEXT("/Game/StarterContent/Shapes/Shape_"));
-	path += object;
-	path += FString(TEXT(".Shape_"));
-	path += object;
-	path += "'";
+	//path += FString(TEXT("/Game/StarterContent/Shapes/Shape_"));
+	//path += object;
+	//path += FString(TEXT(".Shape_"));
+	//path += object;
+	//path += "'"; 
+	path += FString(TEXT("/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'"));
 	FName pathName = FName(*path);
 
 	GC->CreateObject(pathName);
+}
+
+//FString path = FString(TEXT("/Game/Assets/Meshes/SM_Zen_Deck_Chair_01"));
+void AAssistant::createAsset(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
+
+	clearEditingFlags();
+
+	if (entity_map.find(FString(TEXT("Asset"))) == entity_map.end()) {
+		//This means that no object was specified
+	} else {
+		FString object = entity_map.at(FString(TEXT("Asset")));
+		successful_calls++;
+		FString path = "StaticMesh'";
+		path += FString(TEXT("/Game/StarterContent/Props/"));
+		path += object;
+		path += FString(TEXT("."));
+		path += object;
+		path += "'";
+		FName pathName = FName(*path);
+
+		GC->CreateObject(pathName);
+	} 
 }
 
 

@@ -88,6 +88,7 @@ protected:
 	void enableScaling(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void clearEditingFlags();
 	void createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
+	void createAsset(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void enableDelete(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void deleteSelected(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
