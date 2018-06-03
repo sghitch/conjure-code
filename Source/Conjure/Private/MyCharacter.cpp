@@ -166,7 +166,7 @@ void AMyCharacter::SetupAssistant()
 			assistant = *Iter;
 
 		if (assistant != nullptr)
-			assistant->LatencyAudioResponse("I have been spawned into this world");
+			assistant->LatencyAudioResponse("Welcome to Conjure");
 	}
 }
 
