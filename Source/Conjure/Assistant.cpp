@@ -66,6 +66,7 @@ void AAssistant::InitializeAssetMap()
 {
 	assetMap[FString(TEXT("Chair"))] = FString(TEXT("StaticMesh '/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'"));
 	assetMap[FString(TEXT("Bowl"))] = FString(TEXT("StaticMesh '/Game/Assets/Meshes/SM_WaterBowl.SM_WaterBowl'"));
+	assetMap[FString(TEXT("Rock"))] = FString(TEXT("StaticMesh '/Game/Props/SM_Rock.SM_Rock'"));
 }
 
 void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
