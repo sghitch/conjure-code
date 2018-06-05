@@ -55,6 +55,10 @@ void AAssistant::initialize() {
 
 	DeleteMode = false;
 	InitializeSound();
+	
+	
+	
+
 }
 
 void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
@@ -93,6 +97,8 @@ void AAssistant::PostInitializeComponents()
 	if (micStopCue->IsValidLowLevelFast()) {
 		micStopComponent->SetSound(micStopCue);
 	}
+
+
 }
 
 void AAssistant::BeginPlay()
@@ -102,7 +108,10 @@ void AAssistant::BeginPlay()
 	
 	myfile.open("C:/Users/student/Documents/Unreal Projects/Conjure/command_success" + std::to_string(rand()) + ".txt"); //default saves in C:\Program Files\Epic Games\UE_4.18\Engine\Binaries\Win64 folder.
 	
-
+	FString cPath = "StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'";
+	FName cubePath = FName(*cPath);
+	GC->CreateObjectAtStart(cubePath, FVector(-1660.0, -3280.0, 110.0), FVector(.25, .25, .25));
+	
 	
 }
 
@@ -294,6 +303,8 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 	FName pathName = FName(*path);
 
 	GC->CreateObject(pathName);
+
+	
 }
 
 

@@ -38,6 +38,7 @@ public:
 	AActor* SelectedActor = nullptr;
 
 	AAsset* CreateObject(FName pathName);
+	AAsset* CreateObjectAtStart(FName pathName, FVector location, FVector scale);
 
 protected:
 	// Called when the game starts
