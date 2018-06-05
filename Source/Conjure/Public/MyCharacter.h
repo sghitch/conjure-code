@@ -64,6 +64,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TransformFactors")
 	FVector ROTATION_FACTOR = FVector(10.0f, 10.0f, 10.0f);
+
+	UFUNCTION(BlueprintCallable, Category = "GameController")
+		void SetRHLocation(FVector location);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LaserBoolean")
+	bool TranslateOn;
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")

@@ -38,7 +38,8 @@ public:
 	AActor* SelectedActor = nullptr;
 
 	AAsset* CreateObject(FName pathName);
-	AAsset* CreateObjectAtStart(FName pathName, FVector location, FVector scale);
+
+	FVector RHPos;
 
 protected:
 	// Called when the game starts
@@ -54,6 +55,8 @@ protected:
 	}
 
 private:
+	FVector getClampedLocation(FVector vec, FVector origin, float radius);
+	FVector getControllerBasedLocation();
 	FVector getDefaultLocation();
 	FQuat calculateRelativeRotation(FVector rot);
 };
