@@ -112,6 +112,10 @@ void AAssistant::BeginPlay()
 	FString cPath = "StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'";
 	FName cubePath = FName(*cPath);
 	GC->CreateObjectAtStart(cubePath, FVector(-1660.0, -3280.0, 110.0), FVector(.25, .25, .25));
+
+	FString chPath = "StaticMesh'/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'";
+	FName chairPath = FName(*chPath);
+	GC->CreateObjectAtStart(chairPath, FVector(-1660.0, -3280.0, 110.0), FVector(1, 1, 1));
 	
 	
 }

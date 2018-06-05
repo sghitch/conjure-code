@@ -36,7 +36,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameController)
 	AActor* SelectedActor = nullptr;
-
+	AAsset* CreateObjectAtStart(FName pathName, FVector location, FVector scale);
 	AAsset* CreateObject(FName pathName);
 
 	FVector RHPos;
