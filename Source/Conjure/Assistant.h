@@ -33,6 +33,7 @@ public:
 	void BeginPlay() override;
 	void Tick(float DeltaTime) override;
 	void initialize();
+	void InitializeAssetMap();
 	void SetupPlayerInputComponent(class UInputComponent* InputComponent);
 	void LatencyAudioResponse(FString message);
 	void OnMicrophoneStart();
@@ -156,4 +157,6 @@ protected:
 	int successful_calls = 0;
 	int failed_calls = 0;
 	int minute = 0;
+
+
 };

@@ -19,6 +19,8 @@ std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>
 
 std::map<FString, TSharedPtr<FTextToSpeechSynthesizeResponse>> responseCache;
 
+std::map<FString, FString> assetMap;
+
 AAssistant::AAssistant()
 {
 
@@ -57,9 +59,12 @@ void AAssistant::initialize() {
 	DeleteMode = false;
 	InitializeSound();
 	
-	
-	
+	InitializeAssetMap();
+}
 
+void AAssistant::InitializeAssetMap()
+{
+	assetMap[FString(TEXT("Chair"))] = FString(TEXT("StaticMesh '/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'"));
 }
 
 void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
@@ -312,7 +317,6 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 	
 }
 
-//FString path = FString(TEXT("/Game/Assets/Meshes/SM_Zen_Deck_Chair_01"));
 void AAssistant::createAsset(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
 
 	clearEditingFlags();
@@ -320,18 +324,17 @@ void AAssistant::createAsset(TArray<FString> intent_arr, std::map<FString, FStri
 	if (entity_map.find(FString(TEXT("Asset"))) == entity_map.end()) {
 		//This means that no object was specified
 	} else {
-		FString object = entity_map.at(FString(TEXT("Asset")));
+		FString asset = entity_map.at(FString(TEXT("Asset")));
 		successful_calls++;
-		FString path = "StaticMesh'";
-		/*path += FString(TEXT("/Game/StarterContent/Props/"));
-		path += object;
-		path += FString(TEXT("."));
-		path += object;
-		path += "'"; */
-		path += FString(TEXT("/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'"));
-		FName pathName = FName(*path);
+		
+		if (assetMap.find(asset) != assetMap.end()) {
+			FString path = assetMap.at(asset);
+			//FString path = "StaticMesh'";
+			//path += FString(TEXT("/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'"));
+			FName pathName = FName(*path);
 
-		GC->CreateObject(pathName);
+			GC->CreateObject(pathName);
+		}
 	} 
 }
 
