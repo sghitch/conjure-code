@@ -100,6 +100,20 @@ void UGameController::DeleteSelected()
 
 #pragma endregion Transform Relative
 
+AAsset * UGameController::CreateObjectAtStart(FName pathName, FVector location, FVector scale) {
+	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), location, FRotator::ZeroRotator);
+	auto obj = LoadObjFromPath<UStaticMesh>(pathName);
+	TArray<UStaticMeshComponent*> Components;
+	spawnedActor->GetComponents<UStaticMeshComponent>(Components);
+	for (int32 i = 0; i<Components.Num(); i++)
+	{
+		UStaticMeshComponent* StaticMeshComponent = Components[i];
+		StaticMeshComponent->SetStaticMesh(obj);
+	}
+	spawnedActor->SetActorScale3D(scale);
+	return spawnedActor;
+}
+
 AAsset * UGameController::CreateObject(FName pathName)
 {
 	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), getDefaultLocation(), FRotator::ZeroRotator);
