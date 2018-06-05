@@ -44,6 +44,7 @@ AAssistant::AAssistant()
 
 void AAssistant::initialize() {
 	functionMap[FString(TEXT("createObject"))] = std::bind(&AAssistant::createObject, this, _1, _2);
+	functionMap[FString(TEXT("createAsset"))] = std::bind(&AAssistant::createAsset, this, _1, _2);
 	functionMap[FString(TEXT("enableRotation"))] = std::bind(&AAssistant::enableRotation, this, _1, _2);
 	functionMap[FString(TEXT("enableTranslation"))] = std::bind(&AAssistant::enableTranslation, this, _1, _2);
 	functionMap[FString(TEXT("enableScaling"))] = std::bind(&AAssistant::enableScaling, this, _1, _2);
@@ -295,12 +296,11 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 	FString object = entity_map.at(FString(TEXT("Object")));
 	successful_calls++;
 	FString path = "StaticMesh'";
-	//path += FString(TEXT("/Game/StarterContent/Shapes/Shape_"));
-	//path += object;
-	//path += FString(TEXT(".Shape_"));
-	//path += object;
-	//path += "'"; 
-	path += FString(TEXT("/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'"));
+	path += FString(TEXT("/Game/StarterContent/Shapes/Shape_"));
+	path += object;
+	path += FString(TEXT(".Shape_"));
+	path += object;
+	path += "'"; 
 	FName pathName = FName(*path);
 
 	GC->CreateObject(pathName);
@@ -319,11 +319,12 @@ void AAssistant::createAsset(TArray<FString> intent_arr, std::map<FString, FStri
 		FString object = entity_map.at(FString(TEXT("Asset")));
 		successful_calls++;
 		FString path = "StaticMesh'";
-		path += FString(TEXT("/Game/StarterContent/Props/"));
+		/*path += FString(TEXT("/Game/StarterContent/Props/"));
 		path += object;
 		path += FString(TEXT("."));
 		path += object;
-		path += "'";
+		path += "'"; */
+		path += FString(TEXT("/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'"));
 		FName pathName = FName(*path);
 
 		GC->CreateObject(pathName);
