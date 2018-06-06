@@ -70,9 +70,9 @@ void UGameController::RotateSelectedRelative(FVector rot)
 	{
 		auto oldrot = SelectedActor->GetActorRotation();
 	
-		oldrot.Pitch += rot.X;
-		oldrot.Yaw += rot.Y;
-		oldrot.Roll += rot.Z;
+		oldrot.Pitch -= rot.X;
+		oldrot.Yaw -= rot.Y;
+		oldrot.Roll -= rot.Z;
 		 
 		SelectedActor->SetActorRotation(oldrot.Quaternion());
 	}
@@ -145,11 +145,11 @@ FVector UGameController::getClampedLocation(FVector vec, FVector origin, float r
 	}
 
 	// Calculate where the vector formed from the origin to the vector would intersect with spherical bounds
-	FVector recenteredVec = FVector((vec.X - origin.X), (vec.Y - origin.Y), (vec.Z - origin.Z));
-	recenteredVec *= (1.0 / recenteredVec.Size());
+	FVector recenteredVec = vec - origin;
+	recenteredVec.Normalize();
 	recenteredVec *= radius;
 
-	return recenteredVec;
+	return recenteredVec + origin;
 }
 
 /*Location Option B for spawning new objects in the world: place them at fixed distance from User,
@@ -157,7 +157,7 @@ in the vector direction their laser controller points in.
 TODO: if another object already present, spawn in a slightly different place? Outside other object's bounds?*/
 FVector UGameController::getControllerBasedLocation()
 {
-	float radius = 1000.0; // Maximum distance from user that an actor can be placed
+	float radius = 250.0; // Maximum distance from user that an actor can be placed
 	FVector actorLocation = getClampedLocation(RHPos, GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation(), radius);
 	return actorLocation;
 }
@@ -195,9 +195,9 @@ FQuat UGameController::calculateRelativeRotation(FVector rot)
 	FVector objectRelativeUp = SelectedActor->GetTransform().TransformVectorNoScale(relativeUp);*/
 
 	//This is janky af, rewrite with sleep
-	FQuat roll = FQuat(relativeForward, FMath::DegreesToRadians(rot.Z));
-	FQuat pitch = FQuat(relativeRight, FMath::DegreesToRadians(rot.X));
-	FQuat yaw = FQuat(relativeUp, FMath::DegreesToRadians(rot.Y));
+	FQuat roll = FQuat(-relativeForward, FMath::DegreesToRadians(rot.Z));
+	FQuat pitch = FQuat(-relativeRight, FMath::DegreesToRadians(rot.X));
+	FQuat yaw = FQuat(-relativeUp, FMath::DegreesToRadians(rot.Y));
 
 	auto rotation = pitch * yaw * roll;
 	return rotation;

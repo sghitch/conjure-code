@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "CoreMinimal.h"
 #include "EngineUtils.h"
+#include "MotionControllerComponent.h"
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"

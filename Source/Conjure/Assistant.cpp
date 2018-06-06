@@ -67,6 +67,14 @@ void AAssistant::InitializeAssetMap()
 	assetMap[FString(TEXT("Chair"))] = FString(TEXT("StaticMesh '/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'"));
 	assetMap[FString(TEXT("Bowl"))] = FString(TEXT("StaticMesh '/Game/Assets/Meshes/SM_WaterBowl.SM_WaterBowl'"));
 	assetMap[FString(TEXT("Rock"))] = FString(TEXT("StaticMesh '/Game/Props/SM_Rock.SM_Rock'"));
+
+	assetMap[FString(TEXT("Cup"))] = FString(TEXT("StaticMesh '/Game/Assets/Highball_Glass.Highball_Glass'"));
+	assetMap[FString(TEXT("Fork"))] = FString(TEXT("StaticMesh '/Game/Assets/Fork.Fork'"));
+	assetMap[FString(TEXT("Knife"))] = FString(TEXT("StaticMesh '/Game/Assets/Knife.Knife'"));
+	assetMap[FString(TEXT("Napkin"))] = FString(TEXT("StaticMesh '/Game/Assets/Napkin_Cloth.Napkin_Cloth'"));
+	assetMap[FString(TEXT("Plate"))] = FString(TEXT("StaticMesh '/Game/Assets/Plate.Plate'"));
+	assetMap[FString(TEXT("Spoon"))] = FString(TEXT("StaticMesh '/Game/Assets/Spoon.Spoon'"));
+	assetMap[FString(TEXT("WineGlass"))] = FString(TEXT("StaticMesh '/Game/Assets/Wine_Glass.Wine_Glass'"));
 }
 
 void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
