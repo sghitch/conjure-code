@@ -36,9 +36,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameController)
 	AActor* SelectedActor = nullptr;
-
-	AAsset* CreateObject(FName pathName);
 	AAsset* CreateObjectAtStart(FName pathName, FVector location, FVector scale);
+	AAsset* CreateObject(FName pathName);
+
+	FVector RHPos;
 
 protected:
 	// Called when the game starts
@@ -54,6 +55,8 @@ protected:
 	}
 
 private:
+	FVector getClampedLocation(FVector vec, FVector origin, float radius);
+	FVector getControllerBasedLocation();
 	FVector getDefaultLocation();
 	FQuat calculateRelativeRotation(FVector rot);
 };

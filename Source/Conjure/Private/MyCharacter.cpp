@@ -83,7 +83,8 @@ void AMyCharacter::Tick(float DeltaTime)
 
 	FVector curPos = RightHandComponent->GetComponentLocation();
 	FRotator curRot = RightHandComponent->GetComponentRotation();
-	
+
+	TranslateOn = false;
 	if (TriggerPressed && assistant->GetRotateFlag()) {
 		FVector oldRotVec = FVector(oldRot.Pitch, oldRot.Yaw, oldRot.Roll);
 		FVector curRotVec = FVector(curRot.Pitch, curRot.Yaw, curRot.Roll);
@@ -97,6 +98,7 @@ void AMyCharacter::Tick(float DeltaTime)
 	}
 
 	if (TriggerPressed && assistant->GetTranslateFlag()) {
+		TranslateOn = true;
 		assistant->GC->TranslateSelectedRelative(
 			GetNormalizedDifference(oldPos, curPos) * TRANSLATION_FACTOR);
 	}
@@ -164,7 +166,7 @@ void AMyCharacter::SetupAssistant()
 			assistant = *Iter;
 
 		if (assistant != nullptr)
-			assistant->LatencyAudioResponse("I have been spawned into this world");
+			assistant->LatencyAudioResponse("Welcome to Conjure");
 	}
 }
 
@@ -173,6 +175,14 @@ void AMyCharacter::SetSelectedActor(AActor* selectedActor)
 	if (assistant != nullptr)
 	{
 		assistant->GC->SelectedActor = selectedActor;
+	}
+}
+
+void AMyCharacter::SetRHLocation(FVector location)
+{
+	if (assistant != nullptr)
+	{
+		assistant->GC->RHPos = location;
 	}
 }
 

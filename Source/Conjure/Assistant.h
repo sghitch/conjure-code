@@ -33,6 +33,7 @@ public:
 	void BeginPlay() override;
 	void Tick(float DeltaTime) override;
 	void initialize();
+	void InitializeAssetMap();
 	void SetupPlayerInputComponent(class UInputComponent* InputComponent);
 	void LatencyAudioResponse(FString message);
 	void OnMicrophoneStart();
@@ -88,6 +89,7 @@ protected:
 	void enableScaling(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void clearEditingFlags();
 	void createObject(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
+	void createAsset(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void enableDelete(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
 	void deleteSelected(TArray<FString> intent_arr, std::map<FString, FString> entity_map);
@@ -155,4 +157,6 @@ protected:
 	int successful_calls = 0;
 	int failed_calls = 0;
 	int minute = 0;
+
+
 };

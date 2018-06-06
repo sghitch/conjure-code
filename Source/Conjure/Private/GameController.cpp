@@ -106,17 +106,19 @@ AAsset * UGameController::CreateObjectAtStart(FName pathName, FVector location, 
 	TArray<UStaticMeshComponent*> Components;
 	spawnedActor->GetComponents<UStaticMeshComponent>(Components);
 	for (int32 i = 0; i<Components.Num(); i++)
-	{
-		UStaticMeshComponent* StaticMeshComponent = Components[i];
+		 {
+		UStaticMeshComponent * StaticMeshComponent = Components[i];
 		StaticMeshComponent->SetStaticMesh(obj);
-	}
+		}
 	spawnedActor->SetActorScale3D(scale);
 	return spawnedActor;
+	
 }
+
 
 AAsset * UGameController::CreateObject(FName pathName)
 {
-	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), getDefaultLocation(), FRotator::ZeroRotator);
+	auto spawnedActor = GetWorld()->SpawnActor<AAsset>(AAsset::StaticClass(), getControllerBasedLocation(), FRotator::ZeroRotator);
 	auto obj = LoadObjFromPath<UStaticMesh>(pathName);
 	TArray<UStaticMeshComponent*> Components;
 	spawnedActor->GetComponents<UStaticMeshComponent>(Components);
@@ -126,6 +128,7 @@ AAsset * UGameController::CreateObject(FName pathName)
 		StaticMeshComponent->SetStaticMesh(obj);
 	}
 
+	SelectedActor = spawnedActor; // TODO: new code to "force" object selection
 	return spawnedActor;
 }
 
@@ -133,6 +136,35 @@ AAsset * UGameController::CreateObject(FName pathName)
 
 #pragma region Private Methods
 
+FVector UGameController::getClampedLocation(FVector vec, FVector origin, float radius)
+{
+	float objectDistance = FMath::Abs(vec.X - origin.X) + FMath::Abs(vec.Y - origin.Y)
+		+ FMath::Abs(vec.Z - origin.Z);
+	if (objectDistance <= radius) {
+		return vec;
+	}
+
+	// Calculate where the vector formed from the origin to the vector would intersect with spherical bounds
+	FVector recenteredVec = FVector((vec.X - origin.X), (vec.Y - origin.Y), (vec.Z - origin.Z));
+	recenteredVec *= (1.0 / recenteredVec.Size());
+	recenteredVec *= radius;
+
+	return recenteredVec;
+}
+
+/*Location Option B for spawning new objects in the world: place them at fixed distance from User,
+in the vector direction their laser controller points in. 
+TODO: if another object already present, spawn in a slightly different place? Outside other object's bounds?*/
+FVector UGameController::getControllerBasedLocation()
+{
+	float radius = 1000.0; // Maximum distance from user that an actor can be placed
+	FVector actorLocation = getClampedLocation(RHPos, GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation(), radius);
+	return actorLocation;
+}
+
+/* Location Option A for spawning new objects in the world: random location that helps avoid spawning
+multiple objects in the same place, but tends to sometimes put them below the ground or in 
+unpredictable places. */
 FVector UGameController::getDefaultLocation()
 {
 	float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 500));                                                                                                                                                     
