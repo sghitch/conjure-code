@@ -128,7 +128,7 @@ Build/*/**
 
 # Built data for maps
 
-*_BuiltData.uasset
+# *_BuiltData.uasset
 
 
 

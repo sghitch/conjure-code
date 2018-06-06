@@ -19,6 +19,8 @@ std::map<FString, std::function<void(TArray<FString>, std::map<FString, FString>
 
 std::map<FString, TSharedPtr<FTextToSpeechSynthesizeResponse>> responseCache;
 
+std::map<FString, FString> assetMap;
+
 AAssistant::AAssistant()
 {
 
@@ -44,6 +46,7 @@ AAssistant::AAssistant()
 
 void AAssistant::initialize() {
 	functionMap[FString(TEXT("createObject"))] = std::bind(&AAssistant::createObject, this, _1, _2);
+	functionMap[FString(TEXT("createAsset"))] = std::bind(&AAssistant::createAsset, this, _1, _2);
 	functionMap[FString(TEXT("enableRotation"))] = std::bind(&AAssistant::enableRotation, this, _1, _2);
 	functionMap[FString(TEXT("enableTranslation"))] = std::bind(&AAssistant::enableTranslation, this, _1, _2);
 	functionMap[FString(TEXT("enableScaling"))] = std::bind(&AAssistant::enableScaling, this, _1, _2);
@@ -55,6 +58,15 @@ void AAssistant::initialize() {
 
 	DeleteMode = false;
 	InitializeSound();
+	
+	InitializeAssetMap();
+}
+
+void AAssistant::InitializeAssetMap()
+{
+	assetMap[FString(TEXT("Chair"))] = FString(TEXT("StaticMesh '/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'"));
+	assetMap[FString(TEXT("Bowl"))] = FString(TEXT("StaticMesh '/Game/Assets/Meshes/SM_WaterBowl.SM_WaterBowl'"));
+	assetMap[FString(TEXT("Rock"))] = FString(TEXT("StaticMesh '/Game/Props/SM_Rock.SM_Rock'"));
 }
 
 void AAssistant::SetupPlayerInputComponent(UInputComponent* InputComponent)
@@ -93,6 +105,8 @@ void AAssistant::PostInitializeComponents()
 	if (micStopCue->IsValidLowLevelFast()) {
 		micStopComponent->SetSound(micStopCue);
 	}
+
+
 }
 
 void AAssistant::BeginPlay()
@@ -102,7 +116,14 @@ void AAssistant::BeginPlay()
 	
 	myfile.open("C:/Users/student/Documents/Unreal Projects/Conjure/command_success" + std::to_string(rand()) + ".txt"); //default saves in C:\Program Files\Epic Games\UE_4.18\Engine\Binaries\Win64 folder.
 	
+	FString cPath = "StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'";
+	FName cubePath = FName(*cPath);
+	GC->CreateObjectAtStart(cubePath, FVector(-1660.0, -3280.0, 110.0), FVector(.25, .25, .25));
 
+	FString chPath = "StaticMesh'/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'";
+	FName chairPath = FName(*chPath);
+	GC->CreateObjectAtStart(chairPath, FVector(-1660.0, -3280.0, 110.0), FVector(1, 1, 1));
+	
 	
 }
 
@@ -290,10 +311,33 @@ void AAssistant::createObject(TArray<FString> intent_arr, std::map<FString, FStr
 	path += object;
 	path += FString(TEXT(".Shape_"));
 	path += object;
-	path += "'";
+	path += "'"; 
 	FName pathName = FName(*path);
 
 	GC->CreateObject(pathName);
+
+	
+}
+
+void AAssistant::createAsset(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
+
+	clearEditingFlags();
+
+	if (entity_map.find(FString(TEXT("Asset"))) == entity_map.end()) {
+		//This means that no object was specified
+	} else {
+		FString asset = entity_map.at(FString(TEXT("Asset")));
+		successful_calls++;
+		
+		if (assetMap.find(asset) != assetMap.end()) {
+			FString path = assetMap.at(asset);
+			//FString path = "StaticMesh'";
+			//path += FString(TEXT("/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'"));
+			FName pathName = FName(*path);
+
+			GC->CreateObject(pathName);
+		}
+	} 
 }
 
 
