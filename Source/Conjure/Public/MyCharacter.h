@@ -41,6 +41,8 @@ public:
 	bool TriggerPressed;
 
 	FVector GetNormalizedDifference(FVector oldPos, FVector newPos);
+
+	FVector GetTwoHandDifference(FVector curRH, FVector curLH, FVector oldRH, FVector oldLH);
 	
 	AAssistant* assistant = nullptr;
 	// Called to bind functionality to input
@@ -90,6 +92,7 @@ private:
 		class UMotionControllerComponent* RightHandComponent;
 
 	FVector oldScale;
-	FVector oldPos;
+	FVector oldRHPos;
+	FVector oldLHPos;
 	FRotator oldRot;
 };

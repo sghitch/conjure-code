@@ -91,7 +91,7 @@ void UGameController::ScaleSelectedRelative(FVector scale)
 	else //probably trying to grow
 		newScale = FVector(max);
 
-	newScale *= 0.0001;
+	newScale *= 0.01;
 
 	if (SelectedActor != nullptr)
 	{
