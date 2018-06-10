@@ -41,6 +41,7 @@ public:
 	AAsset* CreateObject(FName pathName);
 
 	FVector RHPos;
+	FVector laserEnd;
 
 protected:
 	// Called when the game starts

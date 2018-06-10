@@ -178,11 +178,12 @@ void AMyCharacter::SetSelectedActor(AActor* selectedActor)
 	}
 }
 
-void AMyCharacter::SetRHLocation(FVector location)
+void AMyCharacter::SetRHLocation(FVector location, FVector laserEnd)
 {
 	if (assistant != nullptr)
 	{
 		assistant->GC->RHPos = location;
+		assistant->GC->laserEnd = laserEnd;
 	}
 }
 
