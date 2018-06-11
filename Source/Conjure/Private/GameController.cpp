@@ -138,8 +138,16 @@ AAsset * UGameController::CreateObject(FName pathName)
 
 FVector UGameController::getClampedLocation(FVector vec, FVector origin, float radius)
 {
+
+	if (vec.Equals(FVector(0.0, 0.0, 0.0), 0.0)) {
+		vec = laserEnd;
+		vec.X = vec.X + 100;
+	}
 	float objectDistance = FMath::Abs(vec.X - origin.X) + FMath::Abs(vec.Y - origin.Y)
 		+ FMath::Abs(vec.Z - origin.Z);
+
+	
+
 	if (objectDistance <= radius) {
 		return vec;
 	}
@@ -157,7 +165,7 @@ in the vector direction their laser controller points in.
 TODO: if another object already present, spawn in a slightly different place? Outside other object's bounds?*/
 FVector UGameController::getControllerBasedLocation()
 {
-	float radius = 250.0; // Maximum distance from user that an actor can be placed
+	float radius = 1000.0; // Maximum distance from user that an actor can be placed
 	FVector actorLocation = getClampedLocation(RHPos, GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation(), radius);
 	return actorLocation;
 }
