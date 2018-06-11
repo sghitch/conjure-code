@@ -76,12 +76,24 @@ FVector AMyCharacter::GetNormalizedDifference(FVector oldPos, FVector newPos) {
 	return normalizedVec;
 }
 
+FVector AMyCharacter::GetTwoHandDifference(FVector curRH, FVector curLH, FVector oldRH, FVector oldLH) 
+{
+	FVector curDiff = curRH - curLH;
+	curDiff = curDiff.GetAbs();
+
+	FVector oldDiff = oldRH - oldLH;
+	oldDiff = oldDiff.GetAbs();
+
+	return curDiff - oldDiff;
+}
+
 // Called every frame
 void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FVector curPos = RightHandComponent->GetComponentLocation();
+	FVector curRHPos = RightHandComponent->GetComponentLocation();
+	FVector curLHPos = LeftHandComponent->GetComponentLocation();
 	FRotator curRot = RightHandComponent->GetComponentRotation();
 
 	TranslateOn = false;
@@ -94,13 +106,14 @@ void AMyCharacter::Tick(float DeltaTime)
 
 	if (TriggerPressed && assistant->GetScaleFlag()) {
 		assistant->GC->ScaleSelectedRelative(
-			GetNormalizedDifference(oldScale, curPos) * SCALING_FACTOR);
+			GetTwoHandDifference(curRHPos, curLHPos, oldRHPos, oldLHPos));
+			//GetNormalizedDifference(oldScale, curPos) * SCALING_FACTOR);
 	}
 
 	if (TriggerPressed && assistant->GetTranslateFlag()) {
 		TranslateOn = true;
 		assistant->GC->TranslateSelectedRelative(
-			GetNormalizedDifference(oldPos, curPos) * TRANSLATION_FACTOR);
+			GetNormalizedDifference(oldRHPos, curRHPos) * TRANSLATION_FACTOR);
 	}
 
 	//This allows for enable deletion mode. would have a problem of being stuck on deletion mode because you cant select anything without deleting it
@@ -115,7 +128,8 @@ void AMyCharacter::Tick(float DeltaTime)
 	}
 	
 
-	oldPos = curPos;
+	oldRHPos = curRHPos;
+	oldLHPos = curLHPos;
 	oldRot = curRot;
 }
 

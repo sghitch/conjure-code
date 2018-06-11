@@ -80,10 +80,23 @@ void UGameController::RotateSelectedRelative(FVector rot)
 
 void UGameController::ScaleSelectedRelative(FVector scale)
 {
+	//Makes the scale uniform along all axes by choosing largest absolute value
+	float max = scale.GetMax();
+	float min = scale.GetMin();
+
+	FVector newScale;
+
+	if (min*(-1) > max) //probably trying to shrink
+		newScale = FVector(min);
+	else //probably trying to grow
+		newScale = FVector(max);
+
+	newScale *= 0.01;
+
 	if (SelectedActor != nullptr)
 	{
 		auto oldScale = SelectedActor->GetActorScale3D();
-		oldScale += scale;
+		oldScale += newScale; //scale;
 		oldScale = oldScale.GetAbs();
 
 		SelectedActor->SetActorScale3D(oldScale);
