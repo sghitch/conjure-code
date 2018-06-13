@@ -128,9 +128,9 @@ void AAssistant::BeginPlay()
 	FName cubePath = FName(*cPath);
 	GC->CreateObjectAtStart(cubePath, FVector(-1660.0, -3280.0, 110.0), FVector(.25, .25, .25));
 
-	FString chPath = "StaticMesh'/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'";
+	/*FString chPath = "StaticMesh'/Game/Assets/Meshes/SM_Zen_Deck_Chair_01.SM_Zen_Deck_Chair_01'";
 	FName chairPath = FName(*chPath);
-	GC->CreateObjectAtStart(chairPath, FVector(-1660.0, -3280.0, 110.0), FVector(1, 1, 1));
+	GC->CreateObjectAtStart(chairPath, FVector(-1660.0, -3280.0, 110.0), FVector(1, 1, 1));*/
 	
 	
 }
@@ -221,55 +221,39 @@ void AAssistant::SetDeleteFlag(bool deleteFlag)
 }
 
 void AAssistant::enableRotation(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
-	if (GC->SelectedActor == nullptr) {
-		LatencyAudioResponse("No object selected"); 
-		failed_calls++;
-	}
-	else {
-		successful_calls++;
-		LatencyAudioResponse("object selected");
-		RotationMode = true;
-		ScalingMode = false;
-		TranslationMode = false;
-		DeleteMode = false;
-	}
+
+	successful_calls++;
+	RotationMode = true;
+	ScalingMode = false;
+	TranslationMode = false;
+	DeleteMode = false;
+	
 
 }
 
 void AAssistant::enableTranslation(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
-	if (GC->SelectedActor == nullptr) {
-		LatencyAudioResponse("No object selected");
-		failed_calls++;
-	}
-	else {
-		successful_calls++;
-		LatencyAudioResponse("object selected");
-		RotationMode = false;
-		ScalingMode = false;
-		TranslationMode = true;
-		DeleteMode = false;
-	}
+	successful_calls++;
+	RotationMode = false;
+	ScalingMode = false;
+	TranslationMode = true;
+	DeleteMode = false;
+	
 
 }
 
 void AAssistant::enableScaling(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
-	if (GC->SelectedActor == nullptr) {
-		LatencyAudioResponse("No object selected");
-		failed_calls++;
-	}
-	else {
-		successful_calls++;
-		LatencyAudioResponse("object selected");
-		RotationMode = false;
-		ScalingMode = true;
-		TranslationMode = false;
-		DeleteMode = false;
-	}
+	successful_calls++;
+	LatencyAudioResponse("object selected");
+	RotationMode = false;
+	ScalingMode = true;
+	TranslationMode = false;
+	DeleteMode = false;
+
 
 }
 
 void AAssistant::enableDelete(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
-	if (GC->SelectedActor == nullptr) {
+/*	if (GC->SelectedActor == nullptr) {
 		LatencyAudioResponse("No object selected");
 		failed_calls++;
 	}
@@ -280,7 +264,14 @@ void AAssistant::enableDelete(TArray<FString> intent_arr, std::map<FString, FStr
 		ScalingMode = false;
 		TranslationMode = false;
 		DeleteMode = true;
-	}
+	}*/
+
+	successful_calls++;
+	//LatencyAudioResponse("object selected");
+	RotationMode = false;
+	ScalingMode = false;
+	TranslationMode = false;
+	DeleteMode = true;
 }
 
 void AAssistant::deleteSelected(TArray<FString> intent_arr, std::map<FString, FString> entity_map) {
